@@ -1,0 +1,3223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>അഗസ്ത്യാർകൂടം ഓഫ് സീസൺ ട്രക്കിംഗ്-2026 | Agasthyarkoodam Off SeasonTrekking</title>
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <!-- Custom Styles -->
+<!-- REPLACE the <style> section in your index.html with this updated CSS -->
+
+ <style>
+    :root {
+      --primary: #4a9eff;
+      --primary-dark: #2a7dd8;
+      --accent: #10b981;
+      --accent-dark: #059669;
+      --forest: #065f46;
+      --light-bg: #1a1f2e;
+      --dark-bg: #0f1419;
+      --border-color: #2a3f5f;
+      --text-primary: #e5e7eb;
+      --text-secondary: #9ca3af;
+      --input-bg: #1f2937;
+      --input-border: #374151;
+    }
+
+    * {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(180deg, #0f1419 0%, #1a1f2e 50%, #151b27 100%);
+      min-height: 100vh;
+      padding-bottom: 2rem;
+      color: var(--text-primary);
+    }
+
+    /* Glass Card with Dark Theme */
+    .glass-card {
+      background: rgba(26, 31, 46, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .primary-gradient {
+      background: linear-gradient(135deg, #4a9eff 0%, #10b981 100%);
+    }
+
+    .accent-gradient {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .primary-gradient-text {
+      background: linear-gradient(135deg, #4a9eff 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .btn-primary-custom {
+      background: linear-gradient(135deg, #4a9eff 0%, #10b981 100%);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn-primary-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
+      color: white;
+    }
+
+    .btn-secondary-custom {
+      background: var(--input-bg);
+      border: 2px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn-secondary-custom:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: rgba(74, 158, 255, 0.1);
+    }
+/* Group Info Display - Dark Theme with Readable Text */
+/* Modal Fix - Prevent stuck overlays */
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+
+.modal {
+  z-index: 1050 !important;
+}
+
+.modal.show {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out !important;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden !important;
+}
+#group-info {
+  background: rgba(31, 41, 55, 0.6);
+  border: 2px solid #4a9eff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  color: #e5e7eb;
+}
+
+#group-info .form-label {
+  color: #93c5fd;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+#group-info .form-control {
+  background: #1f2937;
+  border: 2px solid #374151;
+  color: #e5e7eb;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+#group-info .form-control:focus {
+  background: #1f2937;
+  border-color: #4a9eff;
+  color: #e5e7eb;
+  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+}
+
+#group-info .form-control:disabled {
+  background: #0f1419;
+  color: #9ca3af;
+  border-color: #2a3f5f;
+}
+
+#group-info .row {
+  margin-bottom: 1.5rem;
+}
+
+#group-info h5, 
+#group-info h6 {
+  color: #93c5fd;
+  font-weight: 700;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #4a9eff;
+  padding-bottom: 0.5rem;
+}
+
+/* Info Display Text */
+#group-info .info-text {
+  color: #e5e7eb;
+  font-weight: 600;
+}
+
+#group-info .info-label {
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+#group-info .small {
+  color: #9ca3af;
+}
+
+/* Table in Group Info */
+#group-info .table {
+  background: transparent;
+  color: #e5e7eb;
+}
+
+#group-info .table thead th {
+  background: rgba(74, 158, 255, 0.15);
+  color: #93c5fd;
+  font-weight: 700;
+  border-color: #374151;
+}
+
+#group-info .table tbody td {
+  color: #e5e7eb;
+  border-color: #374151;
+}
+
+#group-info .table tbody tr:hover {
+  background: rgba(74, 158, 255, 0.05);
+}
+
+/* Badge in Group Info */
+#group-info .badge {
+  background: rgba(74, 158, 255, 0.2);
+  color: #93c5fd;
+  border: 1px solid rgba(74, 158, 255, 0.4);
+  padding: 0.5rem 1rem;
+}
+
+#group-info .badge.bg-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+#group-info .badge.bg-warning {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+#group-info .badge.bg-danger {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* Card within Group Info */
+#group-info .card {
+  background: rgba(26, 31, 46, 0.5);
+  border: 1px solid #374151;
+  color: #e5e7eb;
+}
+
+#group-info .card-header {
+  background: rgba(74, 158, 255, 0.1);
+  border-color: #374151;
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+#group-info .card-body {
+  color: #e5e7eb;
+}
+
+/* List items in Group Info */
+#group-info ul, 
+#group-info ol {
+  color: #e5e7eb;
+}
+
+#group-info li {
+  margin-bottom: 0.5rem;
+}
+
+#group-info strong {
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+#group-info em {
+  color: #cbd5e1;
+  font-style: italic;
+}
+    .card-custom {
+      border-radius: 1rem;
+      border: 1px solid var(--border-color);
+      background: rgba(26, 31, 46, 0.9);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Form Controls - Dark Theme */
+    .form-control-custom {
+      border: 2px solid var(--input-border);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+    }
+
+    .form-control-custom::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .form-control-custom:focus {
+      border-color: var(--primary);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+    }
+
+    .form-select-custom {
+      border: 2px solid var(--input-border);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      background: var(--input-bg);
+      color: var(--text-primary);
+    }
+
+    .form-select-custom:focus {
+      border-color: var(--primary);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+    }
+
+    .form-select-custom option {
+      background: var(--dark-bg);
+      color: var(--text-primary);
+    }
+
+    .form-label {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .tab-custom {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 600;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tab-custom:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-custom.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .trekker-card {
+      background: rgba(31, 41, 55, 0.5);
+      border: 2px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+
+    .message-box {
+      display: none;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      text-align: center;
+      font-weight: 600;
+      margin: 0.5rem 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .message-box.success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border: 2px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .message-box.error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 2px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .message-box.info {
+      background: rgba(74, 158, 255, 0.15);
+      color: #93c5fd;
+      border: 2px solid rgba(74, 158, 255, 0.4);
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 1rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+.stat-card {
+  background: rgba(31, 41, 55, 0.6);
+  border: 2px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-card h6 {
+  color: #93c5fd;  /* Changed from var(--text-secondary) to bright blue */
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.stat-card .display-6 {
+  color: #10b981;  /* Green for the large numbers */
+  font-weight: 700;
+}
+
+.stat-card div:not(.display-6):not(h6) {
+  color: #e5e7eb;  /* Light text for descriptions */
+}
+
+    .logo-container {
+      width: 80px;
+      height: 80px;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .modal-custom .modal-content {
+      border-radius: 1rem;
+      border: 2px solid var(--border-color);
+      background: var(--light-bg);
+      color: var(--text-primary);
+    }
+
+    .modal-custom .modal-header {
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(15, 20, 25, 0.5);
+    }
+
+    .modal-custom .modal-footer {
+      border-top: 1px solid var(--border-color);
+      background: rgba(15, 20, 25, 0.5);
+    }
+
+    .modal-custom .btn-close {
+      filter: invert(1);
+    }
+
+    .small-muted { 
+      font-size: 0.85rem; 
+      color: var(--text-secondary);
+    }
+
+    /* For all data tables in admin panel */
+.table tbody tr {
+  background: #ffffff;  /* White background */
+}
+
+.table tbody tr:nth-child(odd) {
+  background: #f0f7ff;  /* Light blue for odd rows */
+}
+
+.table tbody tr:nth-child(even) {
+  background: #e8f4f8;  /* Slightly darker light blue for even rows */
+}
+
+.table tbody tr:hover {
+  background: #cce5ff;  /* Highlight on hover */
+}
+
+.table thead {
+  background: #1e40af;  /* Dark blue header */
+  color: #ffffff;       /* White text */
+}
+
+.table th {
+  background: #1e40af !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  padding: 12px 8px;
+  border: 1px solid #1e3a8a;
+}
+
+.table td {
+  padding: 10px 8px;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;  /* Dark text for contrast */
+}
+
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+    }
+
+    .alert-info {
+      background: rgba(74, 158, 255, 0.15);
+      border: 1px solid rgba(74, 158, 255, 0.4);
+      color: #93c5fd;
+    }
+
+    .badge {
+      background: rgba(74, 158, 255, 0.2);
+      color: var(--primary);
+      border: 1px solid rgba(74, 158, 255, 0.4);
+    }
+
+    .badge.bg-success {
+      background: rgba(16, 185, 129, 0.2) !important;
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--text-primary);
+    }
+
+    .text-secondary {
+      color: var(--text-secondary) !important;
+    }
+
+    .text-muted {
+      color: var(--text-secondary) !important;
+    }
+
+    footer {
+      background: rgba(15, 20, 25, 0.8);
+      border-top: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .hero-image {
+        height: 200px;
+      }
+      
+      .btn-primary-custom,
+      .btn-secondary-custom {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .card-custom {
+        padding: 1rem !important;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      
+      h1 {
+        font-size: 1.75rem !important;
+      }
+      
+      h2 {
+        font-size: 1.5rem !important;
+      }
+      
+      h3 {
+        font-size: 1.25rem !important;
+      }
+    }
+  </style>
+
+  <?!= include('hero-data'); ?>
+</head>
+<body>
+  <!-- Global Message Container -->
+  <div id="global-message-container" class="position-fixed top-0 start-50 translate-middle-x mt-3 z-3" style="max-width: 600px; width: 90%; z-index: 1050;"></div>
+
+  <!-- Main Container -->
+  <div class="container py-4" id="app">
+    
+    <!-- Landing Page -->
+    <div id="landing-page" class="animate-fade-in">
+      <div class="glass-card card-custom p-3 p-md-5 mb-4">
+        <div class="row align-items-center">
+          <!-- Left Column -->
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <!-- Logo and Header -->
+            <div class="d-flex align-items-center mb-4">
+              <div class="logo-container primary-gradient me-3">
+                NPFDA
+              </div>
+              <div>
+                <div class="text-primary">നെയ്യാർ പേപ്പാറ എഫ്.ഡി.എ & തിരുവനന്തപുരം വന്യജീവി സങ്കേതം</div>
+                <div class="h4 fw-bold primary-gradient-text">Agasthyarkoodam Off Season Trekking</div>
+              </div>
+            </div>
+
+            <!-- Title and Description -->
+            <h1 class="text-white text-opacity-75 fw-bold">
+              അഗസ്ത്യാർകൂടം <span class="text-white text-opacity-75 fw-bold">ഓഫ് സീസൺ ട്രക്കിംഗ്</span>
+            </h1>
+            <p class="lead text-secondary mb-4">
+              Welcome to the official trekking portal. Register your group, view tickets, and download issued tickets. 
+              Only authorized group emails can register.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="d-flex flex-wrap gap-2 mb-4">
+              <button class="btn btn-primary-custom flex-grow-1" onclick="showView('user-login')">
+                <i class="bi bi-box-arrow-in-right me-2"></i>User Login / Register
+              </button>
+              <button id="admin-login-btn" class="btn btn-secondary-custom flex-grow-1" onclick="showView('admin-login')">
+                <i class="bi bi-shield-lock me-2"></i>Admin Login
+              </button>
+            </div>
+
+            <!-- Important Info -->
+            <div class="bg-info bg-opacity-10 border border-info border-opacity-25 rounded-3 p-3">
+              <div class="d-flex align-items-center mb-2">
+                <div class="bg-danger bg-opacity-10 rounded-2 p-2 me-3">
+                  <i class="bi bi-exclamation-triangle text-danger"></i>
+                </div>
+                <div class="fw-bold text-warning fs-4">Important Information</div>
+              </div>
+              <div class="text-dark">
+                <p class="mb-1"><span class="fw-semibold text-primary">Registration Fee:</span> <span class="fw-bold text-success fs-5">₹5,000 per person</span></p>
+                <p class="small text-secondary">Organised by NEYYAR-PEPPARA FDA • By Anil AV Irumpupalam</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column - Hero Image -->
+          <div class="col-lg-6">
+            <div class="position-relative">
+              <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary bg-opacity-10 rounded-3 blur"></div>
+              <div class="position-relative rounded-3 overflow-hidden border border-4 border-white shadow-lg">
+                <img id="hero-img" class="hero-image" src="" alt="Agasthyarkoodam Trekking">
+                <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-60 p-3">
+                  <div class="text-white fw-bold fs-5">Agasthyarkoodam Peak</div>
+                  <div class="text-white text-opacity-90">Organised by Neyyar-Peppara FDA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="display-6 fw-bold text-primary">₹5,000</div>
+            <div class="text-secondary fw-medium">Fee per person</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="display-6 fw-bold text-success">1-10</div>
+            <div class="text-secondary fw-medium">Trekkers per group</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="display-6 fw-bold text-forest">2026</div>
+            <div class="text-secondary fw-medium">Season</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Login -->
+    <div id="admin-login" class="d-none">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+          <div class="card card-custom animate-slide-up">
+            <div class="card-body p-4 p-md-5">
+              <div class="text-center mb-4">
+                <div class="logo-container primary-gradient mx-auto">
+                  <i class="bi bi-shield-lock fs-3"></i>
+                </div>
+              </div>
+              
+              <h2 class="text-center text-warning fw-bold mb-2">Admin Portal</h2>
+              <p class="text-center text-secondary mb-4">Access the administration dashboard</p>
+              
+              <div id="admin-login-message" class="message-box mb-3"></div>
+              
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Username</label>
+                <input type="text" id="admin-username" class="form-control form-control-custom" placeholder="Enter admin username">
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Password</label>
+                <input type="password" id="admin-password" class="form-control form-control-custom" placeholder="Enter password">
+              </div>
+              <button class="btn btn-primary-custom w-100" onclick="submitAdminLogin()">
+                Sign In to Dashboard
+              </button>
+              
+              <div class="text-center mt-4">
+                <button class="btn btn-link text-decoration-none" onclick="showView('landing-page')">
+                  ← Back to Home
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="d-none">
+      <div class="card card-custom animate-slide-up">
+        <div class="card-body p-4 p-md-5">
+          <!-- Header -->
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+            <div class="flex-grow-1">
+              <h2 class="h1 fw-bold text-warning mb-2">Admin Dashboard</h2>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-success">
+                  <i class="bi bi-shield-check me-1"></i>Admin Access
+                </span>
+                <span id="total-registrations" class="fw-semibold text-primary"></span>
+              </div>
+            </div>
+            <button class="btn btn-secondary-custom mt-2 mt-md-0" onclick="logout()">
+              <i class="bi bi-box-arrow-right me-2"></i>Log out
+            </button>
+          </div>
+
+          <!-- Tabs -->
+          <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active tab-custom" id="authorize-tab" data-bs-toggle="tab" data-bs-target="#authorize" type="button">
+                <i class="bi bi-envelope-check me-2"></i>Authorize Email
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link tab-custom" id="view-tab" data-bs-toggle="tab" data-bs-target="#view" type="button">
+                <i class="bi bi-eye me-2"></i>View Registrations
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link tab-custom" id="report-tab" data-bs-toggle="tab" data-bs-target="#report" type="button">
+                <i class="bi bi-file-earmark-text me-2"></i>Trekkers Report
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link tab-custom" id="auth-list-tab" data-bs-toggle="tab" data-bs-target="#authlist" type="button">
+                <i class="bi bi-person-lines-fill me-2"></i>Authorized Emails
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link tab-custom" id="yettoregister-tab" data-bs-toggle="tab" data-bs-target="#yettoregister" type="button">
+                <i class="bi bi-hourglass-split me-2"></i>Yet to Register
+              </button>
+            </li>
+            <!-- ADD THIS NEW TAB to the existing tab list -->
+<li class="nav-item" role="presentation">
+  <button class="nav-link tab-custom" id="summary-report-tab" data-bs-toggle="tab" data-bs-target="#summary-report" type="button">
+    <i class="bi bi-bar-chart me-2"></i>Summary Report
+  </button>
+</li>
+            <!-- Statistics Tab -->
+<li class="nav-item" role="presentation">
+  <button class="nav-link tab-custom" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats" type="button">
+    <i class="bi bi-bar-chart-line me-2"></i>Statistics & Analytics
+  </button>
+</li>
+          </ul>
+
+          <!-- Tab Content -->
+          <div class="tab-content">
+            <!-- Authorize Tab -->
+            <div class="tab-pane fade show active" id="authorize" role="tabpanel">
+              <div id="authorize-message" class="message-box mb-3"></div>
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Group Email</label>
+                  <input type="email" id="auth-email" class="form-control form-control-custom" placeholder="group@example.com">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Max Trekkers (1-10)</label>
+                  <input type="number" id="auth-max-trekkers" min="1" max="10" value="10" class="form-control form-control-custom">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Assigned Trek Date</label>
+                  <input type="date" id="auth-allowed-date" class="form-control form-control-custom">
+                  <small class="text-muted">If set, users can register only for this date</small>
+                </div>
+              </div>
+              <button class="btn btn-primary-custom px-4" onclick="authorizeEmail()">
+                Authorize Group Email
+              </button>
+            </div>
+
+            <!-- View Data Tab -->
+            <div class="tab-pane fade" id="view" role="tabpanel">
+              <div id="view-data-message" class="message-box mb-3"></div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Sl No</th>
+                      <th>Email</th>
+                      <th>Trek Date</th>
+                      <th>Trekkers</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="registrations-table-body">
+                    <!-- Data will be populated here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Report Tab -->
+            <div class="tab-pane fade" id="report" role="tabpanel">
+              <div id="report-data-message" class="message-box mb-3"></div>
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Date From</label>
+                  <input type="date" id="report-date-from" class="form-control form-control-custom">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Date To</label>
+                  <input type="date" id="report-date-to" class="form-control form-control-custom">
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                  <button class="btn btn-primary-custom w-100" onclick="generateTrekkersReport()">
+                    Generate Report
+                  </button>
+                </div>
+              </div>
+              
+              <div class="d-flex gap-2 mb-4">
+                <button class="btn btn-secondary-custom" onclick="downloadTrekkersReportPDF()">
+                  <i class="bi bi-download me-2"></i>Download PDF Report
+                </button>
+              </div>
+              
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Ticket No</th>
+                      <th>Name</th>
+                      <th>Gender</th>
+                      <th>Age</th>
+                      <th>ID Type</th>
+                      <th>Mobile</th>
+                      <th>Trek Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="report-table-body">
+                    <!-- Data will be populated here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Authorized Emails Tab -->
+            <div class="tab-pane fade" id="authlist" role="tabpanel">
+              <div id="authlist-message" class="message-box mb-3"></div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead class="table-light">
+                    <tr>
+                      <th>#</th>
+                      <th>Authorized Email</th>
+                      <th>Max Trekkers</th>
+                      <th>Assigned Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="authorized-emails-table-body">
+                    <!-- Data will be populated here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Yet to Register Tab -->
+            <div class="tab-pane fade" id="yettoregister" role="tabpanel">
+              <div id="yettoregister-message" class="message-box mb-3"></div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead class="table-light">
+                    <tr>
+                      <th>#</th>
+                      <th>Email</th>
+                      <th>Max Trekkers Allowed</th>
+                      <th>Assigned Trek Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="yettoregister-table-body">
+                    <!-- Data will be populated here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- Summary Report Tab -->
+<div class="tab-pane fade" id="summary-report" role="tabpanel">
+  <div id="summary-report-message" class="message-box mb-3"></div>
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <label class="form-label fw-semibold">Date From</label>
+      <input type="date" id="summary-date-from" class="form-control form-control-custom">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label fw-semibold">Date To</label>
+      <input type="date" id="summary-date-to" class="form-control form-control-custom">
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+      <button class="btn btn-primary-custom w-100" onclick="generateSummaryReport()">
+        Generate Report
+      </button>
+    </div>
+  </div>
+  
+  <div class="d-flex gap-2 mb-4">
+    <button class="btn btn-secondary-custom" onclick="downloadSummaryReportPDF()">
+      <i class="bi bi-download me-2"></i>Download PDF Report
+    </button>
+  </div>
+  
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Date</th>
+          <th>No. of Trekkers</th>
+          <th>Male</th>
+          <th>Female</th>
+          <th>Others</th>
+          <th>Amount (₹)</th>
+          <th>No of Groups</th>
+        </tr>
+      </thead>
+      <tbody id="summary-report-table-body">
+        <!-- Data will be populated here -->
+      </tbody>
+    </table>
+  </div>
+</div>
+            <!-- Statistics Tab -->
+<div class="tab-pane fade" id="stats" role="tabpanel">
+  <div id="stats-message" class="message-box mb-3"></div>
+  
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-6 col-lg-3">
+      <div class="stat-card">
+        <div class="display-6 fw-bold text-primary" id="stat-total-reg">0</div>
+        <div class="text-secondary fw-medium">Total Registrations</div>
+        <small class="text-muted">Groups registered</small>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="stat-card">
+        <div class="display-6 fw-bold text-warning" id="stat-pending">0</div>
+        <div class="text-secondary fw-medium">Pending Approval</div>
+        <small class="text-muted">Awaiting verification</small>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="stat-card">
+        <div class="display-6 fw-bold text-success" id="stat-issued">0</div>
+        <div class="text-secondary fw-medium">Tickets Issued</div>
+        <small class="text-muted">Approved & emailed</small>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="stat-card">
+        <div class="display-6 fw-bold text-accent" id="stat-revenue">₹0</div>
+        <div class="text-secondary fw-medium">Total Revenue</div>
+        <small class="text-muted">Amount collected</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Breakdown -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-6">
+      <div class="card card-custom">
+        <div class="card-body">
+          <h5 class="card-title fw-bold mb-3 text-white">Registration Status</h5>
+          <div id="status-chart">
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+               <span class="text-white">Pending</span>
+                <span class="badge bg-warning" id="status-pending-count">0</span>
+              </div>
+              <div class="progress" style="height: 20px;">
+                <div id="status-pending-bar" class="progress-bar bg-warning" style="width: 0%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="text-white">Tickets Issued</span>
+                <span class="badge bg-success" id="status-issued-count">0</span>
+              </div>
+              <div class="progress" style="height: 20px;">
+                <div id="status-issued-bar" class="progress-bar bg-success" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trek Date Distribution -->
+    <div class="col-lg-6">
+      <div class="card card-custom">
+        <div class="card-body">
+          <h5 class="card-title fw-bold mb-3 text-white">Registrations by Trek Date</h5>
+         <div id="trek-date-chart" class="small text-white">
+            <!-- Data will be populated here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demographics -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-6">
+      <div class="card card-custom">
+        <div class="card-body">
+          <h5 class="card-title fw-bold mb-3 text-white">Gender Distribution</h5>
+          <div id="gender-chart">
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-white">Male</span>
+                <span class="badge bg-info" id="gender-male-count">0</span>
+              </div>
+              <div class="progress" style="height: 18px;">
+                <div id="gender-male-bar" class="progress-bar bg-info" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-white">Female</span>
+                <span class="badge bg-danger" id="gender-female-count">0</span>
+              </div>
+              <div class="progress" style="height: 18px;">
+                <div id="gender-female-bar" class="progress-bar bg-danger" style="width: 0%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-white">Other</span>
+                <span class="badge bg-secondary" id="gender-other-count">0</span>
+              </div>
+              <div class="progress" style="height: 18px;">
+                <div id="gender-other-bar" class="progress-bar bg-secondary" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Age Distribution -->
+    <div class="col-lg-6">
+      <div class="card card-custom">
+        <div class="card-body">
+          <h5 class="card-title fw-bold mb-3 text-white">Age Distribution</h5>
+          <div id="age-chart" class="text-white"> <div class="mb-2">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <small>14-20</small>
+                <small id="age-1-count">0</small>
+              </div>
+              <div class="progress" style="height: 16px;">
+                <div id="age-1-bar" class="progress-bar" style="width: 0%; background-color: #3b82f6;"></div>
+              </div>
+            </div>
+            <div class="mb-2">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <small>21-30</small>
+                <small id="age-2-count">0</small>
+              </div>
+              <div class="progress" style="height: 16px;">
+                <div id="age-2-bar" class="progress-bar" style="width: 0%; background-color: #10b981;"></div>
+              </div>
+            </div>
+            <div class="mb-2">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <small>31-40</small>
+                <small id="age-3-count">0</small>
+              </div>
+              <div class="progress" style="height: 16px;">
+                <div id="age-3-bar" class="progress-bar" style="width: 0%; background-color: #f59e0b;"></div>
+              </div>
+            </div>
+            <div class="mb-2">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <small>41-50</small>
+                <small id="age-4-count">0</small>
+              </div>
+              <div class="progress" style="height: 16px;">
+                <div id="age-4-bar" class="progress-bar" style="width: 0%; background-color: #ef4444;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <small>50+</small>
+                <small id="age-5-count">0</small>
+              </div>
+              <div class="progress" style="height: 16px;">
+                <div id="age-5-bar" class="progress-bar" style="width: 0%; background-color: #8b5cf6;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Metrics -->
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card card-custom">
+        <div class="card-body text-center">
+          <div class="display-5 fw-bold text-primary mb-2" id="stat-total-trekkers">0</div>
+          <div class="text-secondary fw-medium mb-2">Total Trekkers</div>
+          <small class="text-muted">Individual participants</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-custom">
+        <div class="card-body text-center">
+          <div class="display-5 fw-bold text-warning mb-2" id="stat-avg-trekkers">0</div>
+          <div class="text-secondary fw-medium mb-2">Avg per Group</div>
+          <small class="text-muted">Trekkers per registration</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-custom">
+        <div class="card-body text-center">
+          <div class="display-5 fw-bold text-success mb-2" id="stat-avg-revenue">₹0</div>
+          <div class="text-secondary fw-medium mb-2">Avg Revenue</div>
+          <small class="text-muted">Per registration group</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Refresh Button -->
+  <div class="text-end mt-4">
+    <button class="btn btn-primary-custom" onclick="loadStatistics()">
+      <i class="bi bi-arrow-clockwise me-2"></i>Refresh Statistics
+    </button>
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Login -->
+    <div id="user-login" class="d-none">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+          <div class="card card-custom animate-slide-up">
+            <div class="card-body p-4 p-md-5">
+              <div class="text-center mb-4">
+                <div class="logo-container accent-gradient mx-auto">
+                  <i class="bi bi-person-circle fs-3"></i>
+                </div>
+              </div>
+              
+              <h2 class="text-center text-warning fw-bold mb-2">User Login</h2>
+              <p class="text-center text-secondary mb-4">Enter your authorized group email to continue</p>
+              
+              <div id="user-login-message" class="message-box mb-3"></div>
+              
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Group Email</label>
+                <input type="email" id="user-email" class="form-control form-control-custom" placeholder="yourgroup@example.com">
+              </div>
+              <button class="btn btn-primary-custom w-100" onclick="submitUserEmailLogin()">
+                Continue to Registration
+              </button>
+              
+              <div class="text-center mt-4">
+                <button class="btn btn-link text-decoration-none" onclick="showView('landing-page')">
+                  ← Back to Home
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Registration Form -->
+    <div id="user-form" class="d-none">
+      <div class="card card-custom animate-slide-up">
+        <div class="card-body p-4 p-md-5">
+          <!-- Header -->
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+            <div class="flex-grow-1">
+              <h2 class="h1 fw-bold text-warning mb-2">Registration Form (Please Fill All Fields Properly)</h2>
+              <div style="font-weight: bold; color: red;">(ആദ്യം തുക ഒടുക്കൂക)</div>
+            </div>
+            <button class="btn btn-secondary-custom mt-2 mt-md-0" onclick="logout()">
+              <i class="bi bi-box-arrow-right me-2"></i>Log out
+            </button>
+          </div>
+
+          <div id="user-form-message" class="message-box mb-3"></div>
+
+          <!-- Payment Instructions -->
+          <div class="bg-info bg-opacity-10 border border-info border-2 rounded-3 p-3 p-md-4 mb-4">
+            <div class="d-flex align-items-start gap-3">
+              <div class="bg-danger bg-opacity-10 rounded-2 p-2 flex-shrink-0">
+                <i class="bi bi-credit-card text-danger fs-4"></i>
+              </div>
+              <div class="flex-grow-1">
+                <h3 class="h4 fw-bold text-info mb-3">Important Payment Instructions</h3>
+                <div class="text-dark">
+                  <p class="mb-2"><span class="text-info fw-semibold">Application Fee:</span> <span class="fw-bold text-danger fs-5">₹5,000 per person</span></p>
+                  <p class="fw-semibold text-info mb-2">Remit fee to:</p>
+                  <div class="bg-white bg-opacity-50 rounded-3 p-3">
+                    <p class="mb-1">
+                      <span class="fw-semibold">Account No:</span> 
+                      <span class="fw-bold fs-5 text-dark">0503073000000828</span>
+                    </p>
+                    <p class="mb-1"><span class="fw-semibold">IFSC:</span> SIBL0000503</p>
+                    <p class="mb-1"><span class="fw-semibold">Name:</span> AGASTHYADHANAM</p>
+                    <p class="mb-0"><span class="fw-semibold">Bank:</span> SIB Sasthamangalam Branch</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Group Details -->
+          <div class="trekker-card mb-4">
+            <h3 class="h4 fw-bold text-dark mb-3">Group Details</h3>
+            <div class="row g-3">
+              <div class="col-md-6 col-lg-3">
+                <label class="form-label fw-semibold">Trek Date</label>
+             <input type="date" id="trek-date" class="form-control form-control-custom text-dark fw-bold">
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <label class="form-label fw-semibold">No. of Trekkers</label>
+                <select id="total-trekkers" class="form-select form-control-custom"></select>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <label class="form-label fw-semibold">Amount Remitted</label>
+               <input type="number" id="amount-remitted" placeholder="Total Amount" readonly class="form-control form-control-custom bg-light text-dark fw-bold">
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <label class="form-label fw-semibold">Payment ID (UPI/Bank Trans.)</label>
+                <input type="text" id="payment-id" placeholder="Payment ID" class="form-control form-control-custom">
+              </div>
+            </div>
+
+            <!-- Payment Receipt Upload -->
+            <div class="row g-3 mt-3">
+              <div class="col-md-8 col-lg-6">
+                <label class="form-label fw-semibold">Upload Payment Receipt (image / pdf) *</label>
+                <input type="file" id="payment-receipt" accept="image/*,application/pdf" class="form-control form-control-custom" required>
+                <div class="small-muted mt-1">Upload screenshot or PDF of the bank transfer receipt (max 4MB). This is required for admin verification.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trekker Details -->
+          <div class="trekker-card">
+            <h3 class="h4 fw-bold text-dark mb-3">Trekker Details</h3>
+            <div id="trekkers-container" class="row g-3">
+              <!-- Trekker forms will be generated here -->
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-end mt-4">
+            <button class="btn btn-primary-custom px-5 py-3 fs-5" onclick="submitRegistration()">
+              Submit Registration
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Ticket View -->
+    <div id="user-ticket-view" class="d-none">
+      <div class="card card-custom animate-slide-up">
+        <div class="card-body p-4 p-md-5">
+          <!-- Header -->
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+            <div class="flex-grow-1">
+              <h2 class="h1 fw-bold text-dark mb-2">Your Trekking Ticket</h2>
+              <div class="text-secondary">Ticket has been issued successfully</div>
+            </div>
+            <button class="btn btn-secondary-custom mt-2 mt-md-0" onclick="logout()">
+              <i class="bi bi-box-arrow-right me-2"></i>Log out
+            </button>
+          </div>
+
+          <div id="user-ticket-message" class="message-box mb-3"></div>
+          
+          <!-- Ticket Summary -->
+          <div id="user-ticket-summary" class="bg-success bg-opacity-10 rounded-3 p-4 mb-4">
+            <!-- Ticket summary will be rendered here -->
+          </div>
+
+          <!-- Download Button -->
+          <div class="text-center">
+            <button class="btn btn-primary-custom px-5 py-3 fs-5" onclick="downloadTicketPDFUser()">
+              <i class="bi bi-download me-3"></i>Download Ticket as PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group Details (Admin) -->
+    <div id="group-details" class="d-none">
+      <div class="card card-custom animate-slide-up">
+        <div class="card-body p-4 p-md-5">
+          <!-- Header -->
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+            <div class="flex-grow-1">
+              <h2 class="h1 fw-bold text-light mb-2">Group Registration Details</h2>
+              <div class="text-secondary">View and manage group information</div>
+            </div>
+            <div class="d-flex gap-2 mt-2 mt-md-0">
+              <button class="btn btn-secondary-custom" onclick="showView('admin-panel')">
+                ← Back to Dashboard
+              </button>
+              <button class="btn btn-link text-decoration-none" onclick="logout()">Log out</button>
+            </div>
+          </div>
+
+          <div id="group-details-message" class="message-box mb-3"></div>
+          
+          <!-- Group Info -->
+          <div class="trekker-card mb-4">
+            <h3 class="h4 fw-bold  text-light mb-3">Group Information</h3>
+            <div id="group-info" class="row g-3">
+              <!-- Group info will be rendered here -->
+            </div>
+
+            <!-- Receipt Buttons -->
+            <div id="group-receipt-buttons" class="mt-3"></div>
+          </div>
+
+          <!-- Trekkers Table -->
+          <div class="trekker-card">
+            <h3 class="h4 fw-bold bg-light text-white mb-3">Trekker Details</h3>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>ID Type</th>
+                    <th>ID Number</th>
+                    <th>Mobile</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="trekkers-table-body">
+                  <!-- Trekkers will be rendered here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Download Button -->
+          <div class="text-end mt-4">
+            <button class="btn btn-primary-custom px-4" onclick="downloadTicketPDFAdmin()">
+              Download Group Ticket
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Trekker Modal -->
+    <div class="modal modal-custom fade" id="editTrekkerModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title fw-bold">Edit Trekker Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div id="edit-trekker-message" class="message-box mb-3"></div>
+            
+            <input type="hidden" id="edit-trekker-index">
+            <input type="hidden" id="edit-group-email">
+            <input type="hidden" id="edit-group-trekdate">
+            
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Full Name</label>
+                <input type="text" id="edit-name" class="form-control form-control-custom">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Gender</label>
+                <select id="edit-gender" class="form-select form-control-custom">
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Age</label>
+                <input type="number" id="edit-age" min="14" max="100" class="form-control form-control-custom">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">ID Type</label>
+                <select id="edit-id-type" class="form-select form-control-custom">
+                  <option value="">Select ID Type</option>
+                  <option value="Aadhar">Aadhar Card</option>
+                  <option value="Driving License">Driving License</option>
+                  <option value="Passport">Passport</option>
+                  <option value="PAN Card">PAN Card</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">ID Number</label>
+                <input type="text" id="edit-id-number" class="form-control form-control-custom">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Mobile Number</label>
+                <input type="tel" id="edit-mobile" pattern="[0-9]{10}" class="form-control form-control-custom">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary-custom" onclick="saveEditedTrekker()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="container text-center text-secondary mt-5 pt-4 border-top">
+    <div class="mb-2">© 2026 Neyyar Peppara FDA & Thiruvananthapuram Wildlife Sanctuary</div>
+    <div class="small">Agasthyarkoodam Season Trekking Management System</div>
+  </footer>
+
+  <!-- Main JavaScript -->
+  <script>
+    // ====== Message Display System ======
+    function showGlobalMessage(message, type = 'info', duration = 5000) {
+      const container = document.getElementById('global-message-container');
+      const messageId = 'msg-' + Date.now();
+      
+      const messageEl = document.createElement('div');
+      messageEl.id = messageId;
+      messageEl.className = `alert alert-${type} alert-dismissible fade show`;
+      messageEl.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+      `;
+      
+      container.appendChild(messageEl);
+      
+      if (duration > 0) {
+        setTimeout(() => {
+          if (document.getElementById(messageId)) {
+            messageEl.remove();
+          }
+        }, duration);
+      }
+    }
+
+    function showMessage(elementId, message, type) {
+      const msgEl = document.getElementById(elementId);
+      if (msgEl) {
+        msgEl.textContent = message;
+        msgEl.className = `alert alert-${type} message-box`;
+        msgEl.style.display = 'block';
+        
+        setTimeout(() => {
+          if (msgEl.style.display !== 'none') {
+            msgEl.style.display = 'none';
+          }
+        }, 5000);
+      }
+      
+      if (type === 'success' || type === 'danger') {
+        showGlobalMessage(message, type);
+      }
+    }
+
+    // ====== Set Hero Image ======
+    (function setHero(){
+      try {
+        const fallback = 'https://drive.google.com/uc?export=view&id=1MHH1kB2exFkvn-CDfXNyHofiDUZTA8I4';
+        if (typeof HERO_DATA_URL !== 'undefined' && HERO_DATA_URL) {
+          document.getElementById('hero-img').src = HERO_DATA_URL;
+        } else {
+          document.getElementById('hero-img').src = fallback;
+        }
+      } catch(e){}
+    })();
+
+    // ====== Global Variables ======
+    let currentView = 'landing-page';
+    let currentUserEmail = '';
+    let trekkerCount = 1;
+    let userTicketData = null;
+    let currentTrekDate = null;
+    let selectedGroupEmail = '';
+    let selectedTrekDate = '';
+    let allowedMaxForGroup = 10;
+    let allowedDateForUser = '';
+    let lastLoadedGroupData = null;
+
+    function showView(viewId) {
+      document.querySelectorAll('#app > div').forEach(el => el.classList.add('d-none'));
+      const el = document.getElementById(viewId);
+      if (el) {
+        el.classList.remove('d-none');
+        el.classList.add('d-block');
+      }
+      currentView = viewId;
+      
+      document.querySelectorAll('.alert').forEach(m => {
+        m.style.display = 'none';
+      });
+      
+      if (viewId === 'user-form') { 
+        initializeTrekkerForm(); 
+        try {
+          if (allowedDateForUser) {
+            const parts = allowedDateForUser.split('/');
+            if (parts.length === 3) {
+              const yyyy = parts[2], mm = parts[1], dd = parts[0];
+              const iso = `${yyyy}-${mm}-${dd}`;
+              const dtInput = document.getElementById('trek-date');
+              if (dtInput) {
+                dtInput.value = iso;
+                dtInput.readOnly = true;
+                dtInput.style.backgroundColor = '#f8fafc';
+              }
+            }
+          } else {
+            const dtInput = document.getElementById('trek-date');
+            if (dtInput) { 
+              dtInput.readOnly = false; 
+              dtInput.style.backgroundColor = 'white';
+              dtInput.value = ''; 
+            }
+          }
+        } catch(e){}
+      }
+
+      if (viewId === 'admin-panel') { 
+        const tab = new bootstrap.Tab(document.querySelector('#authorize-tab'));
+        tab.show();
+        loadRegistrations(); 
+        loadAuthorizedEmails();
+        loadYetToRegisterEmails();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ====== Admin Login ======
+    function submitAdminLogin() {
+      const username = document.getElementById('admin-username').value;
+      const password = document.getElementById('admin-password').value;
+      if (!username || !password) {
+        showMessage('admin-login-message', 'Please enter both username and password.', 'danger');
+        return;
+      }
+      google.script.run
+        .withSuccessHandler(isLoggedIn => {
+          if (isLoggedIn) { 
+            showMessage('admin-login-message', 'Login successful! Redirecting...', 'success');
+            setTimeout(() => showView('admin-panel'), 1000);
+          }
+          else { 
+            showMessage('admin-login-message', 'Invalid username or password.', 'danger'); 
+          }
+        })
+        .withFailureHandler(() => showMessage('admin-login-message', 'Login failed. Please try again.', 'danger'))
+        .checkAdminCredentials(username, password);
+    }
+
+    // ====== Authorize Email ======
+    function authorizeEmail() {
+      const email = document.getElementById('auth-email').value;
+      const max = Number(document.getElementById('auth-max-trekkers').value) || 10;
+      const allowedDate = document.getElementById('auth-allowed-date').value || '';
+      if (!email) { 
+        showMessage('authorize-message', 'Please enter a valid email address.', 'danger'); 
+        return; 
+      }
+      if (max < 1 || max > 10) { 
+        showMessage('authorize-message', 'Max trekkers must be between 1 and 10', 'danger'); 
+        return; 
+      }
+      showMessage('authorize-message', 'Authorizing email...', 'info');
+      google.script.run
+        .withSuccessHandler(resp => {
+          if (resp.success) {
+            showMessage('authorize-message', resp.message || `Email ${email} has been authorized successfully!`, 'success');
+            document.getElementById('auth-email').value = '';
+            document.getElementById('auth-allowed-date').value = '';
+            loadAuthorizedEmails();
+            loadYetToRegisterEmails();
+          } else {
+            showMessage('authorize-message', resp.message || 'Authorization failed.', 'danger');
+          }
+        })
+        .withFailureHandler(() => showMessage('authorize-message', 'Authorization failed. Please try again.', 'danger'))
+        .authorizeEmail(email, max, allowedDate);
+    }
+
+    // ====== Load Registrations ======
+    function loadRegistrations() {
+      showMessage('view-data-message', 'Loading registrations...', 'info');
+      google.script.run
+        .withSuccessHandler(function(registrations) {
+          const tableBody = document.getElementById('registrations-table-body');
+          tableBody.innerHTML = '';
+
+          if (!registrations || registrations.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No registrations found.</td></tr>';
+            document.getElementById('total-registrations').textContent = 'Total: 0';
+            showMessage('view-data-message', 'No registrations found.', 'info');
+            return;
+          }
+
+          document.getElementById('total-registrations').textContent = `Total: ${registrations.length}`;
+
+          registrations.forEach(row => {
+            const tr = document.createElement('tr');
+
+            const serialTd = document.createElement('td'); 
+            serialTd.textContent = row.SerialNo || '';
+            const emailTd = document.createElement('td'); 
+            emailTd.className = 'text-break'; 
+            emailTd.textContent = row.Email || '';
+            const trekDateTd = document.createElement('td'); 
+            trekDateTd.textContent = row['Trek Date'] || '';
+            const trekkersTd = document.createElement('td'); 
+            trekkersTd.className = 'fw-semibold'; 
+            trekkersTd.textContent = row['No. of Trekkers'] || '';
+            const statusTd = document.createElement('td');
+            const statusBadge = document.createElement('span');
+            statusBadge.className = (row.Status === 'Pending' ? 'badge bg-warning' : 'badge bg-success');
+            statusBadge.textContent = row.Status || '';
+            statusTd.appendChild(statusBadge);
+
+            const actionsTd = document.createElement('td');
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'd-flex flex-wrap gap-1';
+
+            const viewBtn = document.createElement('button');
+            viewBtn.className = 'btn btn-sm btn-outline-primary';
+            viewBtn.type = 'button';
+            viewBtn.textContent = 'View';
+            viewBtn.addEventListener('click', () => viewGroupDetails(row.Email, row['Trek Date']));
+            actionsDiv.appendChild(viewBtn);
+
+            if (row.Status !== 'Ticket Issued') {
+              const issueBtn = document.createElement('button');
+              issueBtn.className = 'btn btn-sm btn-primary';
+              issueBtn.type = 'button';
+              issueBtn.textContent = 'Issue Ticket';
+              issueBtn.addEventListener('click', () => issueTicketAndEmail(row.Email, row['Trek Date']));
+              actionsDiv.appendChild(issueBtn);
+            } else {
+              const dlBtn = document.createElement('button');
+              dlBtn.className = 'btn btn-sm btn-outline-primary';
+              dlBtn.type = 'button';
+              dlBtn.textContent = 'Download';
+              dlBtn.addEventListener('click', () => downloadTicketPDF(row.Email, row['Trek Date']));
+              actionsDiv.appendChild(dlBtn);
+
+              const resendBtn = document.createElement('button');
+              resendBtn.className = 'btn btn-sm btn-primary';
+              resendBtn.type = 'button';
+              resendBtn.textContent = 'Resend';
+              resendBtn.addEventListener('click', () => issueTicketAndEmail(row.Email, row['Trek Date']));
+              actionsDiv.appendChild(resendBtn);
+            }
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-sm btn-danger';
+            deleteBtn.type = 'button';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', () => deleteGroupConfirm(row.Email, row['Trek Date']));
+            actionsDiv.appendChild(deleteBtn);
+
+            actionsTd.appendChild(actionsDiv);
+
+            tr.appendChild(serialTd);
+            tr.appendChild(emailTd);
+            tr.appendChild(trekDateTd);
+            tr.appendChild(trekkersTd);
+            tr.appendChild(statusTd);
+            tr.appendChild(actionsTd);
+
+            tableBody.appendChild(tr);
+          });
+
+          showMessage('view-data-message', `Loaded ${registrations.length} registration(s) successfully.`, 'success');
+        })
+        .withFailureHandler(() => showMessage('view-data-message', 'Could not load data. Please refresh the page.', 'danger'))
+        .getAllRegistrations();
+    }
+
+    // ====== Render Group Details ======
+function renderGroupDetails(groupData) {
+  if (!groupData) return;
+  
+  // Render group info section
+  document.getElementById('group-info').innerHTML = `
+    <div class="col-md-6">
+      <div class="mb-3">
+        <div class="small text-muted">Group Email</div>
+        <div class="fw-semibold text-break">${groupData.Email}</div>
+      </div>
+      <div class="mb-3">
+        <div class="small text-muted">Trek Date</div>
+        <div class="fw-semibold text-success">${groupData['Trek Date']}</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mb-3">
+        <div class="small text-muted">Amount Remitted</div>
+        <div class="fw-semibold">₹${groupData['Amount Remitted'] || ''}</div>
+      </div>
+      <div class="mb-3">
+        <div class="small text-muted">Payment ID</div>
+        <div class="d-flex gap-2">
+          <input id="group-payment-id" class="form-control form-control-sm" value="${(groupData['Payment ID'] || '').toString().replace(/"/g, '&quot;')}" placeholder="Payment ID">
+          <button class="btn btn-sm btn-primary" onclick="saveGroupPaymentId()">Save</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Render receipt section
+  const receiptContainer = document.getElementById('group-receipt-buttons');
+  if (receiptContainer) {
+    receiptContainer.innerHTML = '';
+    const viewUrl = groupData.ReceiptViewUrl || groupData.receiptViewUrl || '';
+    const downloadUrl = groupData.ReceiptDownloadUrl || groupData.receiptDownloadUrl || '';
+    const fileId = groupData.PaymentReceiptFileId || groupData.paymentReceiptFileId || '';
+
+    if (viewUrl || downloadUrl || fileId) {
+      let html = `<div class="d-flex gap-2">`;
+      if (viewUrl) {
+        html += `<a class="btn btn-outline-primary" href="${viewUrl}" target="_blank"><i class="bi bi-eye me-1"></i>Preview Receipt</a>`;
+      } else if (fileId) {
+        html += `<a class="btn btn-outline-primary" href="https://drive.google.com/file/d/${fileId}/view" target="_blank"><i class="bi bi-eye me-1"></i>Preview Receipt</a>`;
+      }
+      if (downloadUrl) {
+        html += `<a class="btn btn-outline-secondary" href="${downloadUrl}" target="_blank"><i class="bi bi-download me-1"></i>Download Receipt</a>`;
+      } else if (fileId) {
+        html += `<a class="btn btn-outline-secondary" href="https://drive.google.com/uc?export=download&id=${fileId}" target="_blank"><i class="bi bi-download me-1"></i>Download Receipt</a>`;
+      }
+      html += `</div>`;
+      receiptContainer.innerHTML = html;
+    } else {
+      receiptContainer.innerHTML = `<div class="small-muted">No receipt uploaded for this group.</div>`;
+    }
+  }
+
+  // Render trekkers table
+  const trekkersTableBody = document.getElementById('trekkers-table-body');
+  if (trekkersTableBody) {
+    trekkersTableBody.innerHTML = '';
+    (groupData.Trekkers || []).forEach((trekker, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="text-break">${trekker.Name || ''}</td>
+        <td>${trekker.Gender || ''}</td>
+        <td>${trekker.Age || ''}</td>
+        <td class="text-break">${trekker['Photo ID Type'] || ''}</td>
+        <td class="font-monospace small text-break">${trekker['ID Number'] || ''}</td>
+        <td>${trekker['Mobile Number'] || ''}</td>
+        <td>
+         <button class="btn btn-sm btn-outline-primary" type="button" onclick="openEditModal(${index})">Edit</button>
+        </td>
+      `;
+      trekkersTableBody.appendChild(tr);
+    });
+  }
+}
+function openEditModal(trekkerIndex) {
+  if (!selectedGroupEmail || !selectedTrekDate) {
+    showMessage('group-details-message', 'Group context missing. Please reload.', 'danger');
+    return;
+  }
+
+  if (!lastLoadedGroupData || !lastLoadedGroupData.Trekkers || !lastLoadedGroupData.Trekkers[trekkerIndex]) {
+    showMessage('group-details-message', 'Trekker data not found.', 'danger');
+    return;
+  }
+
+  const trekker = lastLoadedGroupData.Trekkers[trekkerIndex];
+
+  // Populate modal fields
+  document.getElementById('edit-trekker-index').value = trekkerIndex;
+  document.getElementById('edit-group-email').value = selectedGroupEmail;
+  document.getElementById('edit-group-trekdate').value = selectedTrekDate;
+  document.getElementById('edit-name').value = trekker.Name || '';
+  document.getElementById('edit-gender').value = trekker.Gender || '';
+  document.getElementById('edit-age').value = trekker.Age || '';
+  document.getElementById('edit-id-type').value = trekker['Photo ID Type'] || '';
+  document.getElementById('edit-id-number').value = trekker['ID Number'] || '';
+  document.getElementById('edit-mobile').value = trekker['Mobile Number'] || '';
+
+  // Show the modal
+  try {
+    const modalElement = document.getElementById('editTrekkerModal');
+    
+    if (!modalElement) {
+      showMessage('group-details-message', 'Modal element not found in DOM!', 'danger');
+      return;
+    }
+
+    // Ensure any previous modal instance is properly destroyed
+    const existingInstance = bootstrap.Modal.getInstance(modalElement);
+    if (existingInstance) {
+      existingInstance.dispose();
+    }
+
+    // Remove any orphaned backdrops from previous attempts
+    document.querySelectorAll('.modal-backdrop').forEach(el => {
+      el.remove();
+    });
+
+    // Reset body class
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+
+    // Create fresh modal instance with minimal options
+    const modal = new bootstrap.Modal(modalElement, {
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    // Add event listeners to clean up on close
+    modalElement.addEventListener('hidden.bs.modal', function handleHidden() {
+      // Clean up when modal closes
+      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      modalElement.removeEventListener('hidden.bs.modal', handleHidden);
+    }, { once: true });
+
+    // Show the modal
+    modal.show();
+
+  } catch (err) {
+    console.error('Modal error:', err);
+    showMessage('group-details-message', 'Error opening modal. Try refreshing the page.', 'danger');
+  }
+}
+function showModal(modalElement) {
+  try {
+    const modal = new bootstrap.Modal(modalElement, {
+      backdrop: true,
+      keyboard: true
+    });
+    modal.show();
+  } catch (err) {
+    console.error('Bootstrap modal error:', err);
+  }
+}
+    // Add this NEW function after the renderGroupDetails function
+function showEditModalForTrekker(trekkerIndex) {
+  if (!selectedGroupEmail || !selectedTrekDate) {
+    showMessage('view-data-message', 'Group email or trek date not set.', 'danger');
+    return;
+  }
+  
+  showMessage('edit-trekker-message', 'Loading trekker details...', 'info');
+  
+  google.script.run
+    .withSuccessHandler(function(groupData) {
+      if (!groupData || !groupData.Trekkers || !groupData.Trekkers[trekkerIndex]) {
+        showMessage('view-data-message', 'Trekker data not found.', 'danger');
+        return;
+      }
+      
+      const trekker = groupData.Trekkers[trekkerIndex];
+      
+      // Populate modal fields
+      document.getElementById('edit-trekker-index').value = trekkerIndex;
+      document.getElementById('edit-group-email').value = groupData.Email;
+      document.getElementById('edit-group-trekdate').value = groupData['Trek Date'];
+      document.getElementById('edit-name').value = trekker.Name || '';
+      document.getElementById('edit-gender').value = trekker.Gender || '';
+      document.getElementById('edit-age').value = trekker.Age || '';
+      document.getElementById('edit-id-type').value = trekker['Photo ID Type'] || '';
+      document.getElementById('edit-id-number').value = trekker['ID Number'] || '';
+      document.getElementById('edit-mobile').value = trekker['Mobile Number'] || '';
+      
+      // Show the modal
+      const modal = new bootstrap.Modal(document.getElementById('editTrekkerModal'));
+      modal.show();
+      showMessage('edit-trekker-message', 'Trekker details loaded. Make your changes.', 'info');
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading group data:', error);
+      showMessage('view-data-message', 'Failed to load group details.', 'danger');
+    })
+    .getGroupDetails(selectedGroupEmail, selectedTrekDate);
+}
+
+    // ====== Save Group Payment ID ======
+    function saveGroupPaymentId() {
+      const paymentInput = document.getElementById('group-payment-id');
+      if (!paymentInput) return;
+      const paymentId = paymentInput.value.trim();
+      if (!selectedGroupEmail || !selectedTrekDate) {
+        showMessage('group-details-message', 'Group context missing. Please open group details again.', 'danger');
+        return;
+      }
+
+      const btn = document.querySelector('.btn-sm.btn-primary');
+      if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
+
+      showMessage('group-details-message', 'Saving Payment ID...', 'info');
+      google.script.run
+        .withSuccessHandler(function(resp){
+          if (btn) { btn.disabled = false; btn.textContent = 'Save'; }
+          if (resp && resp.success) {
+            showMessage('group-details-message', resp.message || 'Payment ID updated.', 'success');
+            setTimeout(() => viewGroupDetails(selectedGroupEmail, selectedTrekDate), 700);
+          } else {
+            showMessage('group-details-message', resp && resp.message ? resp.message : 'Failed to update Payment ID.', 'danger');
+          }
+        })
+        .withFailureHandler(function(){
+          if (btn) { btn.disabled = false; btn.textContent = 'Save'; }
+          showMessage('group-details-message', 'Failed to update Payment ID. Please try again.', 'danger');
+        })
+        .apiUpdatePaymentId(selectedGroupEmail, selectedTrekDate, paymentId);
+    }
+
+    // ====== Issue Ticket and Email ======
+    function issueTicketAndEmail(email, date) {
+      showMessage('view-data-message', 'Issuing ticket and sending email...', 'info');
+      google.script.run
+        .withSuccessHandler(resp => {
+          if (resp.success) {
+            showMessage('view-data-message', resp.message || 'Ticket issued and email sent successfully!', 'success');
+            loadRegistrations();
+          } else {
+            showMessage('view-data-message', resp.message || 'Ticket issuance failed.', 'danger');
+          }
+        })
+        .withFailureHandler(() => showMessage('view-data-message', 'Failed to issue ticket. Please try again.', 'danger'))
+        .issueTicketAndEmail(email, date);
+    }
+
+    // ====== View Group Details ======
+// ====== Global Flag to Prevent Recursive Calls ======
+let isLoadingGroupDetails = false;
+
+// ====== View Group Details (FIXED) ======
+function viewGroupDetails(email, date) {
+  // Prevent recursive calls
+  if (isLoadingGroupDetails) {
+    console.warn('Already loading group details, ignoring duplicate call');
+    return;
+  }
+  
+  if (!email || !date) {
+    showMessage('group-details-message', 'Invalid email or date.', 'danger');
+    return;
+  }
+  
+  isLoadingGroupDetails = true;
+  selectedGroupEmail = email; 
+  selectedTrekDate = date;
+  showMessage('group-details-message', 'Loading group details...', 'info');
+  
+  google.script.run
+    .withSuccessHandler(groupData => {
+      isLoadingGroupDetails = false; // Reset flag
+      
+      if (!groupData) {
+        lastLoadedGroupData = null;
+        showMessage('view-data-message', 'Group details not found.', 'danger');
+        return;
+      }
+      
+      lastLoadedGroupData = groupData;
+      renderGroupDetails(groupData);
+      showView('group-details');
+      showMessage('group-details-message', 'Group details loaded successfully.', 'success');
+    })
+    .withFailureHandler(err => {
+      isLoadingGroupDetails = false; // Reset flag on error
+      console.error('Load error:', err);
+      showMessage('view-data-message', 'Failed to load group details. Please try again.', 'danger');
+    })
+    .getGroupDetails(email, date);
+}
+
+    // ====== Generate Trekkers Report ======
+    function generateTrekkersReport() {
+      const from = document.getElementById('report-date-from').value;
+      const to = document.getElementById('report-date-to').value;
+      if (!from || !to) { 
+        showMessage('report-data-message', 'Please select both "Date From" and "Date To".', 'danger'); 
+        return; 
+      }
+      const fromDMY = formatDateDDMMYYYY(from);
+      const toDMY = formatDateDDMMYYYY(to);
+      showMessage('report-data-message', 'Generating report...', 'info');
+      google.script.run
+        .withSuccessHandler(function(resp) {
+          const data = resp.trekkers;
+          const totalAmount = resp.totalAmount;
+          const tbody = document.getElementById('report-table-body');
+          tbody.innerHTML = '';
+              if (!data || data.length === 0) {
+                  tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No tickets issued in this date range.</td></tr>';
+                  showMessage('report-data-message', 'No tickets found for the selected date range.', 'info');
+                  return;
+              }
+          data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td class="font-monospace small text-break">${row.TicketNo}</td>
+              <td class="text-break">${row.Name}</td>
+              <td>${row.Gender}</td>
+              <td>${row.Age}</td>
+              <td class="text-break">${row.IDType}</td>
+              <td>${row.Mobile}</td>
+              <td class="fw-medium">${row.TrekDate}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+          showMessage('report-data-message', `Report generated: ${data.length} trekker(s) found.`, 'success');
+        })
+        .withFailureHandler(() => showMessage('report-data-message', 'Could not load report. Please try again.', 'danger'))
+        .apiGetIssuedTrekkersReport(fromDMY, toDMY);
+    }
+    
+    // ====== Download Trekkers Report PDF ======
+    function downloadTrekkersReportPDF() {
+      const from = document.getElementById('report-date-from').value;
+      const to = document.getElementById('report-date-to').value;
+      if (!from || !to) { 
+        showMessage('report-data-message', 'Please select dates first.', 'danger'); 
+        return; 
+      }
+      const fromDMY = formatDateDDMMYYYY(from);
+      const toDMY = formatDateDDMMYYYY(to);
+      showGlobalMessage('Preparing report PDF...', 'info', 2000);
+      google.script.run
+        .withSuccessHandler(function(base64PDF) {
+          if (!base64PDF) {
+            showGlobalMessage('No issued tickets in this range.', 'danger');
+            return;
+          }
+          const link = document.createElement('a');
+          link.href = `data:application/pdf;base64,${base64PDF}`;
+          link.download = `Trekkers_Report_${fromDMY}_to_${toDMY}.pdf`;
+          document.body.appendChild(link); 
+          link.click(); 
+          document.body.removeChild(link);
+          showGlobalMessage('Report PDF download started!', 'success');
+        })
+        .apiDownloadTrekkersReportPDF(fromDMY, toDMY);
+    }
+
+    // ====== Show Edit Modal ======
+
+    
+    // ====== Save Edited Trekker ======
+    function saveEditedTrekker() {
+  const index = Number(document.getElementById('edit-trekker-index').value);
+  const groupEmail = document.getElementById('edit-group-email').value;
+  const trekDate = document.getElementById('edit-group-trekdate').value;
+  const editedData = {
+    Name: document.getElementById('edit-name').value.trim(),
+    Gender: document.getElementById('edit-gender').value,
+    Age: document.getElementById('edit-age').value,
+    'Photo ID Type': document.getElementById('edit-id-type').value,
+    'ID Number': document.getElementById('edit-id-number').value.trim(),
+    'Mobile Number': document.getElementById('edit-mobile').value.trim()
+  };
+  
+  if (!editedData.Name || !editedData.Gender || !editedData.Age || !editedData['Photo ID Type'] || !editedData['ID Number'] || !editedData['Mobile Number']) {
+    showMessage('edit-trekker-message', 'Please fill in all fields.', 'danger');
+    return;
+  }
+  
+  if (!/^\d{10}$/.test(editedData['Mobile Number'])) {
+    showMessage('edit-trekker-message', 'Mobile number must be 10 digits.', 'danger');
+    return;
+  }
+  
+  const ageNum = Number(editedData.Age);
+  if (isNaN(ageNum) || ageNum < 14 || ageNum > 100) {
+    showMessage('edit-trekker-message', 'Age must be between 14 and 100.', 'danger');
+    return;
+  }
+  
+  showMessage('edit-trekker-message', 'Saving changes...', 'info');
+  google.script.run
+    .withSuccessHandler(resp => {
+      if (resp.success) {
+        showMessage('edit-trekker-message', 'Trekker details updated successfully!', 'success');
+        
+        // Properly close the modal
+        const modalElement = document.getElementById('editTrekkerModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        
+        if (modalInstance) {
+          modalInstance.hide();
+        }
+
+        // Remove backdrop and reset body after modal closes
+        setTimeout(() => {
+          document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+          document.body.classList.remove('modal-open');
+          document.body.style.overflow = '';
+          document.body.style.paddingRight = '';
+          
+          // Reload group details
+          viewGroupDetails(groupEmail, trekDate);
+        }, 500);
+      } else {
+        showMessage('edit-trekker-message', resp.message || 'Update failed.', 'danger');
+      }
+    })
+    .withFailureHandler(() => showMessage('edit-trekker-message', 'Failed to save changes. Please try again.', 'danger'))
+    .updateTrekkerDetails(groupEmail, trekDate, index, editedData);
+}
+
+    // ====== User Email Login ======
+     // ====== User Email Login (FULLY CORRECTED) ======
+    function submitUserEmailLogin() {
+      const email = document.getElementById('user-email').value.trim();
+      if (!email) { 
+        showMessage('user-login-message', 'Please enter your group email address.', 'danger'); 
+        return; 
+      }
+      if (!validateEmail(email)) {
+        showMessage('user-login-message', 'Please enter a valid email address.', 'danger');
+        return;
+      }
+      
+      showMessage('user-login-message', 'Verifying your email...', 'info');
+      
+      google.script.run
+        .withSuccessHandler(resp => {
+          console.log('Login response:', resp); // Debug log
+          
+          if (!resp || !resp.status) {
+            showMessage('user-login-message', 'Invalid response from server.', 'danger');
+            return;
+          }
+          
+          if (resp.status === "unauthorized") {
+            showMessage('user-login-message', resp.message || 'Email not authorized.', 'danger');
+          } 
+          else if (resp.status === "processing") {
+            // Registration submitted, awaiting approval
+            showProcessingStatusModal(resp.message);
+          } 
+          else if (resp.status === "ticket_issued") {
+            // Ticket already issued
+            currentUserEmail = email;
+            currentTrekDate = resp.trekDate || '';
+            allowedMaxForGroup = resp.allowedCount || 10;
+            allowedDateForUser = resp.allowedDate || '';
+            showTicketIssuedModal(resp.message);
+          } 
+          else if (resp.status === "registered") {
+            showMessage('user-login-message', resp.message || 'Already registered.', 'info');
+            allowedMaxForGroup = resp.allowedCount || 10;
+            allowedDateForUser = resp.allowedDate || '';
+          } 
+          else if (resp.status === "not_registered") {
+            // User can register
+            currentUserEmail = email;
+            allowedMaxForGroup = resp.allowedCount || 10;
+            allowedDateForUser = resp.allowedDate || '';
+            populateTrekkersSelect(allowedMaxForGroup);
+            showMessage('user-login-message', 'Email verified! You can now register.', 'success');
+            setTimeout(() => showView('user-form'), 1000);
+          }
+          else {
+            showMessage('user-login-message', 'Unknown response status: ' + resp.status, 'danger');
+          }
+        })
+        .withFailureHandler(err => {
+          console.error('Login error:', err);
+          showMessage('user-login-message', 'Verification failed. Please try again.', 'danger');
+        })
+        .apiUserLoginStatus(email);
+    }
+      // ====== NEW: Show Processing Status Modal ======
+    // ====== Show Processing Status Modal (CORRECTED) ======
+    function showProcessingStatusModal(message) {
+      // Remove any existing overlays first
+      const existingOverlay = document.getElementById('processing-status-overlay');
+      if (existingOverlay) {
+        existingOverlay.remove();
+      }
+      
+      const overlay = document.createElement('div');
+      overlay.id = 'processing-status-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.left = '0';
+      overlay.style.top = '0';
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.zIndex = '20000';
+
+      const box = document.createElement('div');
+      box.style.background = '#ffffff';
+      box.style.padding = '40px 30px';
+      box.style.borderRadius = '12px';
+      box.style.maxWidth = '600px';
+      box.style.width = '90%';
+      box.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.3)';
+      box.style.textAlign = 'center';
+      box.style.fontFamily = 'Arial, sans-serif';
+
+      // Icon
+      const icon = document.createElement('div');
+      icon.style.fontSize = '60px';
+      icon.style.marginBottom = '20px';
+      icon.style.animation = 'spin 2s linear infinite';
+      icon.innerHTML = '⏳';
+
+      // Add CSS animation for hourglass
+      if (!document.getElementById('spin-animation')) {
+        const style = document.createElement('style');
+        style.id = 'spin-animation';
+        style.textContent = `
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      // Title
+      const title = document.createElement('h2');
+      title.style.color = '#0b60a5';
+      title.style.fontSize = '24px';
+      title.style.fontWeight = '700';
+      title.style.marginBottom = '15px';
+      title.style.margin = '0 0 15px 0';
+      title.textContent = 'Application Under Processing';
+
+      // Message
+      const msg = document.createElement('p');
+      msg.style.color = '#333333';
+      msg.style.fontSize = '16px';
+      msg.style.lineHeight = '1.6';
+      msg.style.marginBottom = '15px';
+      msg.style.margin = '0 0 15px 0';
+      msg.innerHTML = `
+        <strong>${message}</strong><br><br>
+        <span style="color: #666666; font-size: 14px;">
+          Our admin team is reviewing your registration. You will receive your ticket via email as soon as it is approved. 
+          This usually takes 24-48 hours.
+        </span>
+      `;
+
+      // OK Button
+      const okBtn = document.createElement('button');
+      okBtn.style.backgroundColor = '#0b60a5';
+      okBtn.style.color = 'white';
+      okBtn.style.border = 'none';
+      okBtn.style.padding = '12px 30px';
+      okBtn.style.fontSize = '16px';
+      okBtn.style.marginTop = '20px';
+      okBtn.style.borderRadius = '5px';
+      okBtn.style.cursor = 'pointer';
+      okBtn.style.fontWeight = '600';
+      okBtn.textContent = 'Return to Home';
+      okBtn.onmouseover = function() { this.style.backgroundColor = '#0a4a85'; };
+      okBtn.onmouseout = function() { this.style.backgroundColor = '#0b60a5'; };
+      
+      okBtn.addEventListener('click', function() {
+        try { overlay.remove(); } catch (e) {}
+        showView('landing-page');
+        document.getElementById('user-email').value = '';
+      });
+
+      box.appendChild(icon);
+      box.appendChild(title);
+      box.appendChild(msg);
+      box.appendChild(okBtn);
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+    }
+        // ====== Show Ticket Already Issued Modal (CORRECTED) ======
+    function showTicketIssuedModal(message) {
+      // Remove any existing overlays first
+      const existingOverlay = document.getElementById('ticket-issued-overlay');
+      if (existingOverlay) {
+        existingOverlay.remove();
+      }
+      
+      const overlay = document.createElement('div');
+      overlay.id = 'ticket-issued-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.left = '0';
+      overlay.style.top = '0';
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.zIndex = '20000';
+
+      const box = document.createElement('div');
+      box.style.background = '#ffffff';
+      box.style.padding = '40px 30px';
+      box.style.borderRadius = '12px';
+      box.style.maxWidth = '600px';
+      box.style.width = '90%';
+      box.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.3)';
+      box.style.textAlign = 'center';
+      box.style.fontFamily = 'Arial, sans-serif';
+
+      // Icon
+      const icon = document.createElement('div');
+      icon.style.fontSize = '60px';
+      icon.style.marginBottom = '20px';
+      icon.innerHTML = '✅';
+
+      // Title
+      const title = document.createElement('h2');
+      title.style.color = '#059669';
+      title.style.fontSize = '24px';
+      title.style.fontWeight = '700';
+      title.style.marginBottom = '15px';
+      title.style.margin = '0 0 15px 0';
+      title.textContent = 'Ticket Already Issued!';
+
+      // Message
+      const msg = document.createElement('p');
+      msg.style.color = '#333333';
+      msg.style.fontSize = '16px';
+      msg.style.lineHeight = '1.6';
+      msg.style.marginBottom = '15px';
+      msg.style.margin = '0 0 15px 0';
+      msg.innerHTML = `
+        <strong>${message}</strong><br><br>
+        <span style="color: #666666; font-size: 14px;">
+          Your ticket has been issued and sent to your authorized email address. 
+          Please check your email inbox and spam folder for the ticket attachment. 
+          The ticket includes all necessary documents and QR code for trekking.
+        </span>
+      `;
+
+      // Additional Info
+      const info = document.createElement('div');
+      info.style.backgroundColor = '#ecfdf5';
+      info.style.border = '2px solid #6ee7b7';
+      info.style.borderRadius = '8px';
+      info.style.padding = '15px';
+      info.style.marginBottom = '20px';
+      info.style.fontSize = '13px';
+      info.style.color = '#059669';
+      info.style.lineHeight = '1.6';
+      info.innerHTML = `
+        <strong style="display: block; margin-bottom: 8px;">📧 What to do next:</strong>
+        <span style="display: block; margin-bottom: 4px;">1. Check your authorized email for the ticket</span>
+        <span style="display: block; margin-bottom: 4px;">2. Download the PDF attachment</span>
+        <span style="display: block; margin-bottom: 4px;">3. Print all 5 pages</span>
+        <span style="display: block;">4. Bring it along with ID proof to the trek</span>
+      `;
+
+      // OK Button
+      const okBtn = document.createElement('button');
+      okBtn.style.backgroundColor = '#059669';
+      okBtn.style.color = 'white';
+      okBtn.style.border = 'none';
+      okBtn.style.padding = '12px 30px';
+      okBtn.style.fontSize = '16px';
+      okBtn.style.borderRadius = '5px';
+      okBtn.style.cursor = 'pointer';
+      okBtn.style.fontWeight = '600';
+      okBtn.textContent = 'Return to Home';
+      okBtn.onmouseover = function() { this.style.backgroundColor = '#047857'; };
+      okBtn.onmouseout = function() { this.style.backgroundColor = '#059669'; };
+      
+      okBtn.addEventListener('click', function() {
+        try { overlay.remove(); } catch (e) {}
+        showView('landing-page');
+        document.getElementById('user-email').value = '';
+      });
+
+      box.appendChild(icon);
+      box.appendChild(title);
+      box.appendChild(msg);
+      box.appendChild(info);
+      box.appendChild(okBtn);
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+    }
+    // ====== Validate Email ======
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // ====== Populate Trekkers Select ======
+    function populateTrekkersSelect(max) {
+      if (!max || typeof max !== 'number') max = Number(max) || 1;
+      if (max < 1) max = 1;
+      const CLIENT_MAX = 10;
+      if (max > CLIENT_MAX) max = CLIENT_MAX;
+
+      const select = document.getElementById('total-trekkers');
+      if (!select) return;
+      select.innerHTML = '';
+      for (let i = 1; i <= max; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = `${i} trekker${i > 1 ? 's' : ''}`;
+        select.appendChild(opt);
+      }
+
+      select.value = max;
+      updateAmountRemitted();
+    }
+
+    // ====== Initialize Trekker Form ======
+    function initializeTrekkerForm() {
+      const max = (typeof allowedMaxForGroup === 'number' && allowedMaxForGroup > 0) ? allowedMaxForGroup : Number(allowedMaxForGroup) || 10;
+      populateTrekkersSelect(max);
+      trekkerCount = Number(document.getElementById('total-trekkers').value) || max;
+      updateTrekkerCount();
+    }
+    
+    // ====== Create Trekker Form ======
+    function createTrekkerForm(idx) {
+      return `
+        <div class="col-12">
+          <div class="border border-2 border-light-subtle rounded-3 p-3 p-md-4 bg-light bg-opacity-25">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0">Trekker ${idx}</h5>
+              <div class="bg-primary bg-opacity-10 rounded-circle p-2 text-primary fw-bold">
+                ${idx}
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Full Name *</label>
+                <input type="text" name="name" class="form-control form-control-custom" placeholder="Enter full name" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Gender *</label>
+                <select name="gender" class="form-select form-control-custom" required>
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Age *</label>
+                <input type="number" name="age" class="form-control form-control-custom" placeholder="Enter age" min="14" max="100" required>
+                <small class="text-muted">Minimum age: 14 years</small>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Photo ID Type *</label>
+                <select name="id-type" class="form-select form-control-custom" required>
+                  <option value="">Select ID Type</option>
+                  <option value="Aadhar">Aadhar Card</option>
+                  <option value="Driving License">Driving License</option>
+                  <option value="Passport">Passport</option>
+                  <option value="PAN Card">PAN Card</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">ID Number *</label>
+                <input type="text" name="id-number" class="form-control form-control-custom" placeholder="Enter ID number" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Mobile Number *</label>
+                <input type="tel" name="mobile" class="form-control form-control-custom" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ====== Update Trekker Count ======
+    function updateTrekkerCount() {
+      let count = parseInt(document.getElementById('total-trekkers').value, 10);
+      const allowed = (typeof allowedMaxForGroup === 'number' && allowedMaxForGroup > 0)
+        ? allowedMaxForGroup
+        : (Number(allowedMaxForGroup) > 0 ? Number(allowedMaxForGroup) : 10);
+
+      if (isNaN(count) || count < 1 || count > allowed) {
+        showMessage('user-form-message', `Number of trekkers must be between 1 and ${allowed}.`, 'danger');
+        count = Math.max(1, Math.min(allowed, isNaN(count) ? allowed : count));
+        document.getElementById('total-trekkers').value = count;
+      }
+
+      trekkerCount = count;
+      const container = document.getElementById('trekkers-container');
+      container.innerHTML = '';
+      for (let i = 0; i < trekkerCount; i++) {
+        container.insertAdjacentHTML('beforeend', createTrekkerForm(i + 1));
+      }
+      updateAmountRemitted();
+    }
+
+    // ====== Generate UUID ======
+    function generateUUID() {
+      if (window.crypto && crypto.getRandomValues) {
+        var buf = new Uint8Array(16);
+        crypto.getRandomValues(buf);
+        buf[6] = (buf[6] & 0x0f) | 0x40;
+        buf[8] = (buf[8] & 0x3f) | 0x80;
+        return Array.from(buf).map(function(b){ return ('00' + b.toString(16)).slice(-2); })
+          .join('').replace(/^(.{8})(.{4})(.{4})(.{4})(.+)$/, '$1-$2-$3-$4-$5');
+      } else {
+        return 'id-' + Date.now() + '-' + Math.floor(Math.random()*1000000);
+      }
+    }
+
+    // ====== Read File as Data URL ======
+    function readFileAsDataUrl(file) {
+      return new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.onerror = function() { reader.abort(); reject(new Error('Failed to read file')); };
+        reader.onload = function() { resolve(reader.result); };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ====== Submit Registration ======
+    function submitRegistration(){
+      const trekDate = document.getElementById('trek-date').value;
+      const amountRemitted = document.getElementById('amount-remitted').value;
+      const paymentId = document.getElementById('payment-id').value;
+      const receiptInput = document.getElementById('payment-receipt');
+      const trekkers = [];
+      const forms = document.querySelectorAll('#trekkers-container > div');
+      
+      if (!trekDate) {
+        showMessage('user-form-message', 'Please select a trek date.', 'danger');
+        return;
+      }
+      
+      if (!paymentId || paymentId.trim() === '') {
+        showMessage('user-form-message', 'Please enter Payment ID.', 'danger');
+        return;
+      }
+      
+      if (!receiptInput || !receiptInput.files || receiptInput.files.length === 0) {
+        showMessage('user-form-message', 'Please attach the bank transfer receipt before submitting.', 'danger');
+        return;
+      }
+
+      let allValid = true;
+      for (let i = 0; i < forms.length; i++) {
+        const form = forms[i];
+        const name = form.querySelector('input[name="name"]').value.trim();
+        const gender = form.querySelector('select[name="gender"]').value;
+        const age = form.querySelector('input[name="age"]').value;
+        const idType = form.querySelector('select[name="id-type"]').value;
+        const idNumber = form.querySelector('input[name="id-number"]').value.trim();
+        const mobile = form.querySelector('input[name="mobile"]').value.trim();
+        
+        if (!name || !gender || !age || !idType || !idNumber || !mobile) {
+          showMessage('user-form-message',`Please fill in all details for Trekker ${i+1}`,'danger');
+          allValid = false;
+          break;
+        }
+        if (!/^\d{10}$/.test(mobile)) {
+          showMessage('user-form-message',`Mobile number must be 10 digits for Trekker ${i+1}`,'danger');
+          allValid = false;
+          break;
+        }
+        const ageNum = Number(age);
+        if (isNaN(ageNum) || ageNum < 14 || ageNum > 100) {
+          showMessage('user-form-message',`Age must be between 14 and 100 for Trekker ${i+1}`,'danger');
+          allValid = false;
+          break;
+        }
+        trekkers.push({ name, gender, age: ageNum, idType, idNumber, mobile });
+      }
+      
+      if (!allValid) return;
+      
+      if (!currentUserEmail) {
+        showMessage('user-form-message', 'User email not found. Please log in again.', 'danger');
+        return;
+      }
+      if (allowedMaxForGroup && trekkers.length > allowedMaxForGroup) {
+        showMessage('user-form-message', `This group is authorized for maximum ${allowedMaxForGroup} trekkers.`, 'danger');
+        return;
+      }
+
+      if (allowedDateForUser) {
+        const trekDateDMY = formatDateDDMMYYYY(trekDate);
+        if (trekDateDMY !== allowedDateForUser) {
+          showMessage('user-form-message', `Selected trek date ${trekDateDMY} is not allowed. Assigned date: ${allowedDateForUser}`, 'danger');
+          return;
+        }
+      }
+
+      showMessage('user-form-message', 'Preparing your receipt and submitting...', 'info');
+
+      const file = receiptInput.files[0];
+      const maxBytes = 4 * 1024 * 1024;
+      if (file.size > maxBytes) {
+        showMessage('user-form-message', 'Receipt file too large. Please use a file less than 4MB.', 'danger');
+        return;
+      }
+
+      readFileAsDataUrl(file).then(function(dataUrl) {
+        var parts = dataUrl.split(',');
+        var base64 = parts[1] || '';
+        var mime = (parts[0].split(':')[1] || '').split(';')[0];
+
+        var receiptObj = {
+          name: file.name,
+          mime: mime,
+          base64: base64
+        };
+
+        var submissionId = generateUUID();
+
+        google.script.run
+          .withSuccessHandler(resp=>{
+            if(resp && resp.success){
+              const successText = 'Registration submitted successfully! Please wait for admin verification. The Ticket will be received in your mail within 2 days.';
+
+              if (!document.getElementById('user-form-confirm-overlay')) {
+                const overlay = document.createElement('div');
+                overlay.id = 'user-form-confirm-overlay';
+                overlay.style.position = 'fixed';
+                overlay.style.left = '0';
+                overlay.style.top = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0,0,0,0.45)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '20000';
+
+                const box = document.createElement('div');
+                box.style.background = '#ffffff';
+                box.style.padding = '20px 22px';
+                box.style.borderRadius = '10px';
+                box.style.maxWidth = '560px';
+                box.style.width = '90%';
+                box.style.boxShadow = '0 8px 30px rgba(0,0,0,0.3)';
+                box.style.textAlign = 'center';
+                box.style.lineHeight = '1.4';
+
+                const msg = document.createElement('div');
+                msg.style.color = '#0b60a5';
+                msg.style.fontSize = '15px';
+                msg.style.fontWeight = '600';
+                msg.style.marginBottom = '14px';
+                msg.textContent = successText;
+
+                const okBtn = document.createElement('button');
+                okBtn.className = 'btn btn-primary-custom';
+                okBtn.style.padding = '10px 22px';
+                okBtn.style.fontSize = '15px';
+                okBtn.textContent = 'OK';
+
+                box.appendChild(msg);
+                box.appendChild(okBtn);
+                overlay.appendChild(box);
+                document.body.appendChild(overlay);
+
+                okBtn.addEventListener('click', function() {
+                  try { overlay.remove(); } catch (e) {}
+                  showView('landing-page');
+                });
+              }
+
+            } else {
+              showMessage('user-form-message', resp && resp.message ? resp.message : 'Submission failed','danger');
+            }
+          })
+          .withFailureHandler(()=> showMessage('user-form-message','Connection error. Please try again.','danger'))
+          .submitRegistration(currentUserEmail, trekDate, amountRemitted, paymentId, trekkers, receiptObj, submissionId);
+
+      }).catch(function(err) {
+        showMessage('user-form-message','Could not read receipt file. Try a different file.','danger');
+      });
+    }
+
+    // ====== Format Date DDMMYYYY ======
+    function formatDateDDMMYYYY(dateStr) {
+      if (!dateStr) return "";
+      if (dateStr.includes("/")) { return dateStr; }
+      else if (dateStr.includes("-")) {
+        const [yyyy, mm, dd] = dateStr.split("-");
+        return `${dd}/${mm}/${yyyy}`;
+      }
+      return dateStr;
+    }
+    
+    // ====== User Ticket Login ======
+    function userTicketLogin(email) {
+      showMessage('user-ticket-message', 'Loading your ticket...', 'info');
+      google.script.run
+        .withSuccessHandler(function(resp){
+          if(resp && resp.success) {
+            userTicketData = resp.group;
+            renderUserTicketSummary(userTicketData);
+            showView('user-ticket-view');
+            showMessage('user-ticket-message', 'Ticket loaded successfully!', 'success');
+          } else {
+            showMessage('user-login-message', resp.message || 'Ticket not issued yet.', 'danger');
+          }
+        })
+        .withFailureHandler(()=> showMessage('user-login-message','Connection error. Please try again.','danger'))
+        .apiUserTicketLogin(email);
+    }
+  // ====== Generate Summary Report ======
+function generateSummaryReport() {
+  const from = document.getElementById('summary-date-from').value;
+  const to = document.getElementById('summary-date-to').value;
+  if (!from || !to) { 
+    showMessage('summary-report-message', 'Please select both "Date From" and "Date To".', 'danger'); 
+    return; 
+  }
+  const fromDMY = formatDateDDMMYYYY(from);
+  const toDMY = formatDateDDMMYYYY(to);
+  showMessage('summary-report-message', 'Generating summary report...', 'info');
+  
+  google.script.run
+    .withSuccessHandler(function(resp) {
+      const data = resp.summary;
+      const tbody = document.getElementById('summary-report-table-body');
+      tbody.innerHTML = '';
+      
+      if (!data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No data found for the selected date range.</td></tr>';
+        showMessage('summary-report-message', 'No data found for the selected date range.', 'info');
+        return;
+      }
+      
+      data.forEach((row, idx) => {
+        const tr = document.createElement('tr');
+        const isTotal = row.Date === 'TOTAL';
+        
+        if (isTotal) {
+          tr.style.backgroundColor = '#f8f9fa';
+          tr.style.fontWeight = 'bold';
+          tr.style.borderTop = '2px solid #333';
+        }
+        
+        tr.innerHTML = `
+          <td class="fw-semibold">${row.Date}</td>
+          <td class="text-center">${row['No. of Trekkers']}</td>
+          <td class="text-center">${row.Male}</td>
+          <td class="text-center">${row.Female}</td>
+          <td class="text-center">${row.Others}</td>
+          <td class="text-right">₹ ${row.Amount.toLocaleString('en-IN')}</td>
+          <td class="text-center">${row['No of Groups']}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      showMessage('summary-report-message', `Summary report generated: ${data.length} records (including total).`, 'success');
+    })
+    .withFailureHandler(() => showMessage('summary-report-message', 'Could not load summary report. Please try again.', 'danger'))
+    .apiGetSummaryReport(fromDMY, toDMY);
+}
+
+// ====== Download Summary Report PDF ======
+function downloadSummaryReportPDF() {
+  const from = document.getElementById('summary-date-from').value;
+  const to = document.getElementById('summary-date-to').value;
+  if (!from || !to) { 
+    showMessage('summary-report-message', 'Please select dates and generate report first.', 'danger'); 
+    return; 
+  }
+  const fromDMY = formatDateDDMMYYYY(from);
+  const toDMY = formatDateDDMMYYYY(to);
+  showGlobalMessage('Preparing summary report PDF...', 'info', 2000);
+  
+  google.script.run
+    .withSuccessHandler(function(base64PDF) {
+      if (!base64PDF) {
+        showGlobalMessage('No data available for the selected range.', 'danger');
+        return;
+      }
+      const link = document.createElement('a');
+      link.href = `data:application/pdf;base64,${base64PDF}`;
+      link.download = `Summary_Report_${fromDMY}_to_${toDMY}.pdf`;
+      document.body.appendChild(link); 
+      link.click(); 
+      document.body.removeChild(link);
+      showGlobalMessage('Summary report PDF download started!', 'success');
+    })
+    .withFailureHandler(function() {
+      showMessage('summary-report-message', 'PDF download failed. Please try again.', 'danger');
+    })
+    .apiDownloadSummaryReportPDF(fromDMY, toDMY);
+}  
+    // ====== Render User Ticket Summary ======
+    function renderUserTicketSummary(data) {
+      document.getElementById('user-ticket-summary').innerHTML = `
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <div class="text-muted fw-medium">Ticket Number</div>
+              <div class="fs-3 fw-bold">${data['Ticket No']}</div>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted fw-medium">Group Email</div>
+              <div class="fs-5 fw-semibold text-break">${data.Email}</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <div class="text-muted fw-medium">Trek Date</div>
+              <div class="fs-4 fw-bold text-success">${data['Trek Date']}</div>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted fw-medium">Number of Trekkers</div>
+              <div class="fs-3 fw-bold text-primary">${data.Trekkers.length}</div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="d-inline-flex align-items-center px-3 py-1 rounded-pill bg-success bg-opacity-25 text-success">
+              <i class="bi bi-check-circle me-2"></i>
+              Payment Verified
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    
+    // ====== Download Ticket PDF User ======
+    function downloadTicketPDFUser() {
+      if (!userTicketData) {
+        showMessage('user-ticket-message', 'Ticket data not loaded.', 'danger');
+        return;
+      }
+      showGlobalMessage('Preparing your ticket PDF...', 'info', 2000);
+      google.script.run
+        .withSuccessHandler(function(base64PDF) {
+          if (!base64PDF) {
+            showGlobalMessage('Ticket not available for download.', 'danger');
+            return;
+          }
+          const link = document.createElement('a');
+          link.href = `data:application/pdf;base64,${base64PDF}`;
+          link.download = `Trekking_Ticket_${userTicketData['Ticket No']}.pdf`;
+          document.body.appendChild(link); 
+          link.click(); 
+          document.body.removeChild(link);
+          showGlobalMessage('Ticket PDF download started!', 'success');
+        })
+        .withFailureHandler(function() {
+          showMessage('user-ticket-message', 'PDF download failed. Please try again.', 'danger');
+        })
+        .apiDownloadTicketPDF(userTicketData.Email, userTicketData['Trek Date']);
+    }
+    
+    // ====== Logout ======
+    function logout() {
+      currentUserEmail = ''; 
+      userTicketData = null;
+      showGlobalMessage('Logged out successfully.', 'info');
+      setTimeout(() => showView('landing-page'), 500);
+    }
+
+    // ====== Fee Management ======
+    let feePerPerson = 3000;
+    function fetchFeePerPerson() {
+      google.script.run.withSuccessHandler(function(fee) {
+        feePerPerson = fee || 3000;
+        updateAmountRemitted();
+      }).apiGetFeePerPerson();
+    }
+    
+    function updateAmountRemitted() {
+      const trekkersInput = document.getElementById('total-trekkers');
+      if (!trekkersInput) return;
+      let numTrekkers = Number(trekkersInput.value);
+      if (!numTrekkers || numTrekkers < 1) {
+        trekkersInput.value = 1;
+        numTrekkers = 1;
+      }
+      const amount = numTrekkers * feePerPerson;
+      document.getElementById('amount-remitted').value = amount;
+    }
+
+    // ====== Load Authorized Emails ======
+    function loadAuthorizedEmails() {
+      showMessage('authlist-message', 'Loading authorized emails...', 'info');
+      google.script.run
+        .withSuccessHandler(function(list) {
+          const tbody = document.getElementById('authorized-emails-table-body');
+          tbody.innerHTML = '';
+          if (!list || list.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">No authorized emails found.</td></tr>';
+            showMessage('authlist-message', 'No authorized emails found.', 'info');
+            return;
+          }
+          list.forEach((row, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${idx + 1}</td>
+              <td class="text-break">${row.Email || ''}</td>
+              <td>${row.MaxTrekkers || ''}</td>
+              <td>${row.AllowedDate || ''}</td>
+              <td>
+                <div class="d-flex gap-2 flex-wrap">
+                  <button class="btn btn-sm btn-outline-primary" onclick="(function(){document.getElementById('user-email').value='${(row.Email||'').replace(/'/g, "\\'")}'; showView('user-login');})()">Login as user</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteAuthorizedEmailConfirm('${(row.Email||'').replace(/'/g, "\\'")}')">Delete</button>
+                </div>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+          showMessage('authlist-message', `Loaded ${list.length} authorized email(s).`, 'success');
+        })
+        .withFailureHandler(function() {
+          showMessage('authlist-message', 'Could not load authorized emails.', 'danger');
+        })
+        .getAllAuthorizedEmails();
+    }
+    
+    // ====== Download Ticket PDF Admin ======
+    function downloadTicketPDFAdmin() {
+      if (!selectedGroupEmail || !selectedTrekDate) {
+        showMessage('group-details-message', 'Group email or trek date not available.', 'danger');
+        return;
+      }
+      showGlobalMessage('Preparing ticket PDF...', 'info', 2000);
+      google.script.run
+        .withSuccessHandler(function(base64PDF) {
+          if (!base64PDF) {
+            showGlobalMessage('Ticket not available for download.', 'danger');
+            return;
+          }
+          const link = document.createElement('a');
+          link.href = `data:application/pdf;base64,${base64PDF}`;
+          link.download = `Agasthyarkoodam_Ticket_${selectedGroupEmail.split('@')[0]}_${selectedTrekDate.replace(/\//g, '-')}.pdf`;
+          document.body.appendChild(link); 
+          link.click(); 
+          document.body.removeChild(link);
+          showGlobalMessage('Ticket PDF download started!', 'success');
+        })
+        .withFailureHandler(function() {
+          showMessage('group-details-message', 'PDF download failed. Please try again.', 'danger');
+        })
+        .apiDownloadTicketPDF(selectedGroupEmail, selectedTrekDate);
+    }
+    
+    // ====== Download Ticket PDF (for downloadTicketPDF call from View Registrations) ======
+    function downloadTicketPDF(email, date) {
+      selectedGroupEmail = email;
+      selectedTrekDate = date;
+      downloadTicketPDFAdmin();
+    }
+    // ====== Load Yet to Register Emails ======
+    function loadYetToRegisterEmails() {
+      showMessage('yettoregister-message', 'Loading authorized but not registered emails...', 'info');
+      google.script.run
+        .withSuccessHandler(function(list) {
+          const tbody = document.getElementById('yettoregister-table-body');
+          tbody.innerHTML = '';
+          if (!list || list.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">All authorized emails have registered! ✓</td></tr>';
+            showMessage('yettoregister-message', 'All authorized emails have submitted registrations.', 'success');
+            return;
+          }
+          list.forEach((row, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${idx + 1}</td>
+              <td class="text-break">${row.Email || ''}</td>
+              <td>${row.MaxTrekkers || '—'}</td>
+              <td>${row.AllowedDate || '—'}</td>
+              <td>
+                <div class="d-flex gap-2 flex-wrap">
+                  <button class="btn btn-sm btn-outline-primary" onclick="(function(){document.getElementById('user-email').value='${(row.Email||'').replace(/'/g, "\\'")}'; showView('user-login');})()">Login as User</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteAuthorizedEmailConfirm('${(row.Email||'').replace(/'/g, "\\'")}')">Delete</button>
+                </div>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+          showMessage('yettoregister-message', `Found ${list.length} authorized email(s) yet to register.`, 'success');
+        })
+        .withFailureHandler(function() {
+          showMessage('yettoregister-message', 'Could not load data. Please try again.', 'danger');
+        })
+        .apiGetYetToRegisterEmails();
+    }
+// ====== Load Statistics ======
+function loadStatistics() {
+  showMessage('stats-message', 'Loading statistics...', 'info');
+  google.script.run
+    .withSuccessHandler(function(stats) {
+      if (!stats) {
+        showMessage('stats-message', 'No data available for statistics.', 'info');
+        return;
+      }
+
+      // Update Summary Cards
+      document.getElementById('stat-total-reg').textContent = stats.totalRegistrations;
+      document.getElementById('stat-pending').textContent = stats.pendingApprovals;
+      document.getElementById('stat-issued').textContent = stats.ticketsIssued;
+      document.getElementById('stat-revenue').textContent = '₹' + formatNumberWithCommas(stats.totalRevenue);
+      document.getElementById('stat-total-trekkers').textContent = stats.totalTrekkers;
+      document.getElementById('stat-avg-trekkers').textContent = stats.averageTrkkersPerGroup;
+      
+      const avgRevenue = stats.totalRegistrations > 0 
+        ? Math.round(stats.totalRevenue / stats.totalRegistrations)
+        : 0;
+      document.getElementById('stat-avg-revenue').textContent = '₹' + formatNumberWithCommas(avgRevenue);
+
+      // Status Breakdown
+      const total = stats.statusBreakdown['Pending'] + stats.statusBreakdown['Ticket Issued'];
+      if (total > 0) {
+        const pendingPct = (stats.statusBreakdown['Pending'] / total * 100).toFixed(1);
+        const issuedPct = (stats.statusBreakdown['Ticket Issued'] / total * 100).toFixed(1);
+        
+        document.getElementById('status-pending-count').textContent = stats.pendingApprovals;
+        document.getElementById('status-pending-bar').style.width = pendingPct + '%';
+        document.getElementById('status-issued-count').textContent = stats.ticketsIssued;
+        document.getElementById('status-issued-bar').style.width = issuedPct + '%';
+      }
+
+      // Trek Date Distribution
+      const trekDateChart = document.getElementById('trek-date-chart');
+      trekDateChart.innerHTML = '';
+      Object.keys(stats.trekDateBreakdown).sort().forEach(date => {
+        const count = stats.trekDateBreakdown[date];
+        const html = `
+          <div class="mb-2">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <small class="fw-semibold">${date}</small>
+              <small class="badge bg-primary">${count}</small>
+            </div>
+            <div class="progress" style="height: 16px;">
+              <div class="progress-bar" style="width: ${Math.min(100, (count / stats.totalRegistrations * 100))}%; background-color: #4a9eff;"></div>
+            </div>
+          </div>
+        `;
+        trekDateChart.insertAdjacentHTML('beforeend', html);
+      });
+
+      // Gender Distribution
+      const genderTotal = Object.values(stats.genderDistribution).reduce((a, b) => a + b, 0);
+      if (genderTotal > 0) {
+        const maleP = (stats.genderDistribution['Male'] / genderTotal * 100).toFixed(1);
+        const femaleP = (stats.genderDistribution['Female'] / genderTotal * 100).toFixed(1);
+        const otherP = (stats.genderDistribution['Other'] / genderTotal * 100).toFixed(1);
+        
+        document.getElementById('gender-male-count').textContent = stats.genderDistribution['Male'];
+        document.getElementById('gender-male-bar').style.width = maleP + '%';
+        document.getElementById('gender-female-count').textContent = stats.genderDistribution['Female'];
+        document.getElementById('gender-female-bar').style.width = femaleP + '%';
+        document.getElementById('gender-other-count').textContent = stats.genderDistribution['Other'];
+        document.getElementById('gender-other-bar').style.width = otherP + '%';
+      }
+
+      // Age Distribution
+      const ageTotal = Object.values(stats.ageDistribution).reduce((a, b) => a + b, 0);
+      if (ageTotal > 0) {
+        const ageGroups = ['14-20', '21-30', '31-40', '41-50', '50+'];
+        ageGroups.forEach((group, idx) => {
+          const count = stats.ageDistribution[group];
+          const pct = (count / ageTotal * 100).toFixed(1);
+          document.getElementById('age-' + (idx + 1) + '-count').textContent = count;
+          document.getElementById('age-' + (idx + 1) + '-bar').style.width = pct + '%';
+        });
+      }
+
+      showMessage('stats-message', 'Statistics updated successfully!', 'success');
+    })
+    .withFailureHandler(() => showMessage('stats-message', 'Failed to load statistics.', 'danger'))
+    .apiGetStatistics();
+}
+
+// ====== Format Number with Commas ======
+function formatNumberWithCommas(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Auto-load statistics when the stats tab is clicked
+document.addEventListener('DOMContentLoaded', function() {
+  const statsTab = document.getElementById('stats-tab');
+  if (statsTab) {
+    statsTab.addEventListener('click', function() {
+      loadStatistics();
+    });
+  }
+});
+    // ====== Delete Authorized Email Confirm ======
+    function deleteAuthorizedEmailConfirm(email) {
+      if (!email) return;
+      if (!confirm(`Delete authorized email ${email}? This cannot be undone.`)) return;
+      showMessage('authlist-message', `Deleting ${email}...`, 'info');
+      google.script.run
+        .withSuccessHandler(function(resp) {
+          if (resp && resp.success) {
+            showMessage('authlist-message', resp.message || 'Deleted successfully.', 'success');
+            loadAuthorizedEmails();
+            loadYetToRegisterEmails();
+          } else {
+            showMessage('authlist-message', resp && resp.message ? resp.message : 'Delete failed.', 'danger');
+          }
+        })
+        .withFailureHandler(function() {
+          showMessage('authlist-message', 'Delete failed. Try again.', 'danger');
+        })
+        .deleteAuthorizedEmail(email);
+    }
+
+    // ====== Delete Group Confirm ======
+    function deleteGroupConfirm(email, date) {
+      if (!email || !date) { showMessage('view-data-message','Invalid parameters','danger'); return; }
+      if (!confirm(`Delete registrations for ${email} on ${date}? This will remove those rows permanently.`)) return;
+      showMessage('view-data-message', 'Deleting group...', 'info');
+      google.script.run
+        .withSuccessHandler(function(resp) {
+          if (resp && resp.success) {
+            showMessage('view-data-message', resp.message || 'Group deleted.', 'success');
+            loadRegistrations();
+          } else {
+            showMessage('view-data-message', resp && resp.message ? resp.message : 'Delete failed.', 'danger');
+          }
+        })
+        .withFailureHandler(function() {
+          showMessage('view-data-message', 'Delete failed. Try again.', 'danger');
+        })
+        .deleteGroup(email, date);
+    }
+
+    // ====== Initialize Application ======
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchFeePerPerson();
+      const params = new URLSearchParams(window.location.search);
+      const role = params.get('role');
+      const e = params.get('email');
+      if (role === 'user') {
+        const adminBtn = document.getElementById('admin-login-btn');
+        if (adminBtn) {
+          adminBtn.disabled = true;
+          adminBtn.style.opacity = '0.45';
+          adminBtn.style.cursor = 'not-allowed';
+        }
+        if (e) {
+          const decoded = decodeURIComponent(e);
+          const userEmailInput = document.getElementById('user-email');
+          if (userEmailInput) userEmailInput.value = decoded;
+          showView('user-login');
+
+          setTimeout(function() {
+            try {
+              showMessage('user-login-message', 'Auto-logging you in...', 'info');
+              submitUserEmailLogin();
+            } catch (err) {
+              console.error('Auto login failed', err);
+              showMessage('user-login-message', 'Auto login failed. Please try manually.', 'danger');
+            }
+          }, 500);
+        }
+      }
+
+      document.addEventListener('change', function(evt){
+        if (evt.target && evt.target.id === 'total-trekkers') {
+          updateAmountRemitted();
+          if (!document.getElementById('user-form').classList.contains('d-none')) {
+            updateTrekkerCount();
+          }
+        }
+      });
+
+      setTimeout(() => {
+        showGlobalMessage('Welcome to Agasthyarkoodam Trekking Portal 2026!', 'info', 3000);
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
