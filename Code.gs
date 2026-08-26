@@ -95,33 +95,75 @@ function ensureColumn(sheet, header) {
   }
 }
 
+// Robust date normalization: accepts Date objects, dd/mm/yyyy, dd-mm-yyyy, yyyy-mm-dd, and strings with time
 function normalizeToDDMMYYYY(input) {
-  if (!input) return '';
+  if (input === null || input === undefined || input === '') return '';
   try {
-    if (typeof input === 'string' && input.indexOf('/') !== -1) {
-      const parts = input.split('/');
+    // If Date object
+    if (Object.prototype.toString.call(input) === "[object Date]" && !isNaN(input)) {
+      return formatDateDDMMYYYY(input);
+    }
+
+    // If it's a number or numeric string, allow it to be handled by Date constructor as fallback
+    var s = ('' + input).toString().trim();
+    if (!s) return '';
+
+    // Remove time portion if present
+    var datePart = s.split(' ')[0];
+
+    // If contains '/'
+    if (datePart.indexOf('/') !== -1) {
+      var parts = datePart.split('/');
       if (parts.length === 3) {
-        const dd = Number(parts[0]), mm = Number(parts[1]), yyyy = Number(parts[2]);
+        var dd = Number(parts[0]), mm = Number(parts[1]), yyyy = Number(parts[2]);
         if (!isNaN(dd) && !isNaN(mm) && !isNaN(yyyy)) {
           return `${String(dd).padStart(2,'0')}/${String(mm).padStart(2,'0')}/${yyyy}`;
         }
       }
     }
-    if (typeof input === 'string' && input.indexOf('-') !== -1) {
-      const parts = input.split('-');
-      if (parts.length === 3) {
-        const yyyy = Number(parts[0]), mm = Number(parts[1]), dd = Number(parts[2]);
-        if (!isNaN(dd) && !isNaN(mm) && !isNaN(yyyy)) {
-          return `${String(dd).padStart(2,'0')}/${String(mm).padStart(2,'0')}/${yyyy}`;
+
+    // If contains '-'
+    if (datePart.indexOf('-') !== -1) {
+      var dashParts = datePart.split('-');
+      if (dashParts.length === 3) {
+        // If first part is 4 chars -> assume YYYY-MM-DD
+        if (dashParts[0].length === 4) {
+          var yyyy2 = Number(dashParts[0]), mm2 = Number(dashParts[1]), dd2 = Number(dashParts[2]);
+          if (!isNaN(dd2) && !isNaN(mm2) && !isNaN(yyyy2)) {
+            return `${String(dd2).padStart(2,'0')}/${String(mm2).padStart(2,'0')}/${yyyy2}`;
+          }
+        }
+        // If last part is 4 chars -> assume DD-MM-YYYY
+        if (dashParts[2].length === 4) {
+          var dd3 = Number(dashParts[0]), mm3 = Number(dashParts[1]), yyyy3 = Number(dashParts[2]);
+          if (!isNaN(dd3) && !isNaN(mm3) && !isNaN(yyyy3)) {
+            return `${String(dd3).padStart(2,'0')}/${String(mm3).padStart(2,'0')}/${yyyy3}`;
+          }
         }
       }
     }
-    const d = new Date(input);
-    if (Object.prototype.toString.call(d) === "[object Date]" && !isNaN(d)) {
-      return formatDateDDMMYYYY(d);
-    }
-  } catch (e) {}
+
+    // Final fallback: attempt Date parsing
+    var parsed = new Date(s);
+    if (!isNaN(parsed)) return formatDateDDMMYYYY(parsed);
+  } catch (e) {
+    // ignore
+  }
   return '';
+}
+
+// Convert numbers (or numeric cells) to plain full-digit strings (no exponential)
+function toPlainNumberString(val) {
+  if (val === null || val === undefined || val === '') return '';
+  if (typeof val === 'string') return val;
+  if (typeof val === 'number') {
+    try {
+      return Utilities.formatString('%.0f', val);
+    } catch (e) {
+      return String(Math.trunc(val));
+    }
+  }
+  return String(val);
 }
 
 // ====== Logo Helpers ======
@@ -273,42 +315,18 @@ function authorizeEmail(email, maxTrekkers, allowedDate) {
       `<p>Maximum allowed trekkers for your group: <strong>${maxTrekkers}</strong>.</p>`,
       allowedDateNormalized ? `<p>Assigned trek date: <strong>${allowedDateNormalized}</strong></p>` : '',
       `<hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">`,
-      webAppUrl ? `<p><strong>ശ്രദ്ധിക്കുക:</strong> ലിങ്ക് തുറക്കുന്നതിന് മുൻപ് ചുവടെ പറയുന്ന നിർദ്ദേശങ്ങൾ വായിച്ച് മനസിലാക്കേണ്ടതാണ്.നിർദ്ദേശങ്ങൾ പാലിക്കാതെ രജിസ്റ്റർ ചെയ്താൽ ഉണ്ടാവുന്ന സാമ്പത്തിക ബാധ്യതകളുൾപ്പെടെയുള്ള കഷ്ടനഷ്ടങ്ങൾക്ക് വകുപ്പ് ഉത്തരവാദിയല്ല.</p>
-       <ul>
-        <li>നിങ്ങൾക്ക് ഇമെയിലിൽ ലഭിച്ച ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുക. അപ്പോൾ Ticket Booking WebApp-ന്റെ ഡാഷ് ബോർഡ് തുറക്കുന്നതായിരിക്കും.</li>
-        <li>ഡാഷ് ബോർഡിലെ <strong>'User Login/Register'</strong> എന്ന ബട്ടൺ ക്ലിക്ക് ചെയ്യുക. അതിൽ നിങ്ങളുടെ ഇമെയിൽ (രജിസ്റ്റർ ചെയ്യാൻ വേണ്ടി നൽകിയത്) എന്റർ ചെയ്യുക.</li>
-        <li>തുടർന്ന് <strong>'Continue to Registration'</strong> എന്ന ബട്ടണിൽ ക്ലിക്ക് ചെയ്യുക. അപ്പോൾ രജിസ്ട്രേഷൻ ഫോം തുറക്കുന്നതായിരിക്കും.</li>
-        <li>ആദ്യം തന്നെ താഴെ നൽകിയിട്ടുള്ള ബാങ്ക് അക്കൗണ്ടിലേയ്ക്ക് നിങ്ങളുടെ ട്രക്കിങ്ങ് ഫീസ് (ഒരാൾക്ക് 5000 രൂപ വീതം) <strong> Internet Banking/ UPI Transfer </strong> എന്നിവയിൽ ഏതെങ്കിലും മുഖേന Transfer ചെയ്യേണ്ടതാണ് (Account Name, Account No., IFSC എന്നിവ കൊടുത്ത്) </li>
-        <li>തുക ഒടുക്കിയതിന്റെ <strong>Payment Transaction ID (Receipt No)</strong> യും മറ്റു വിവരങ്ങളും ആ പേജിൽ എന്റർ ചെയ്തതിന് ശേഷം<strong> അതിന്റെ രസീത് ഇമേജ് ആയോ PDF ആയോ രജിസ്ട്റേഷൻ ഫോമിൽ അപ്‌ലോഡ് ചെയ്യേണ്ടതാണ്.<strong> </li>
-        <li>നിങ്ങളുടെ തുക ഒടുക്കിയത് ഓഫീസിന്റെ ബാങ്ക് അക്കൗണ്ടിൽ പരിശോധിച്ചതിന് ശേഷം വൈകുന്നേരം നിങ്ങളുടെ ഇമെയിലിൽ ടിക്കറ്റ് ലഭിക്കുന്നതാണ്.</li>
-        <li>ടിക്കറ്റ് പേജിന്റെ ഏറ്റവും ചുവടെ കാണുന്ന ഐക്കണിൽ നിന്നും നിങ്ങളുടെ ടിക്കറ്റ് പി.ഡി.എഫ് ഫോർമാറ്റിൽ ഡൗൺലോഡ് ചെയ്ത് മെഡിക്കൽ സർട്ടിഫിക്കറ്റ് ഉൾപ്പെടെയുള്ളവ ലഭ്യമാക്കി ട്രക്കിന് വരുമ്പോൾ ഹാജരാക്കേണ്ടതാണ്.</li>
-    </ul>
-     <div style="background-color: #f1f8e9; border: 1px solid #c5e1a5; padding: 15px; border-radius: 8px; margin: 20px 0;">
-        <h3 style="margin-top: 0; color: #2E7D32; border-bottom: 1px solid #a5d6a7; padding-bottom: 5px;">Bank Account Details</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-                <td style="padding: 5px 0; width: 140px; font-weight: bold;">Account No:</td>
-                <td style="padding: 5px 0; font-family: monospace; font-size: 16px;">0503073000000828</td>
-            </tr>
-            <tr>
-                <td style="padding: 5px 0; font-weight: bold;">IFSC Code:</td>
-                <td style="padding: 5px 0; font-family: monospace; font-size: 16px;">SIBL0000503</td>
-            </tr>
-            <tr>
-                <td style="padding: 5px 0; font-weight: bold;">Account Name:</td>
-                <td style="padding: 5px 0;">AGASTHYADHANAM</td>
-            </tr>
-            <tr>
-                <td style="padding: 5px 0; font-weight: bold;">Branch:</td>
-                <td style="padding: 5px 0;">SIB Sasthamangalam Branch</td>
-            </tr>
-            <tr>
-                <td style="padding: 5px 0; font-weight: bold;">Amount:</td>
-                <td style="padding: 5px 0;">₹5,000 per person</td>
-            </tr>
-        </table>
-    </div>
-      <div style="text-align:center; margin:20px 0;"><a href="${webAppUrl}" style="background-color:#2E7D32;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;font-weight:bold;">Click Here to Register</a><br><br><span style="font-size:12px;color:#666;">Or copy this link: <a href="${webAppUrl}">${webAppUrl}</a></span></div>` : '<p>Please open the registration web app to continue.</p>',
+      webAppUrl ? `<p><strong>ശ്രദ്ധിക്കുക:</strong> ലിങ്ക് തുറക്കുന്നതിന് മുൻപ് ചുവടെ പറയുന്നതിന്റ[narrative truncated in mail for brevity]</p>` : '',
+      `<div style="background-color: #f1f8e9; border: 1px solid #c5e1a5; padding: 15px; border-radius: 8px; margin: 20px 0;">`,
+      `<h3 style="margin-top: 0; color: #2E7D32; border-bottom: 1px solid #a5d6a7; padding-bottom: 5px;">Bank Account Details</h3>`,
+      `<table style="width: 100%; border-collapse: collapse;">`,
+      `<tr><td style="padding: 5px 0; width: 140px; font-weight: bold;">Account No:</td><td style="padding: 5px 0; font-family: monospace; font-size: 16px;">0503073000000828</td></tr>`,
+      `<tr><td style="padding: 5px 0; font-weight: bold;">IFSC Code:</td><td style="padding: 5px 0; font-family: monospace; font-size: 16px;">SIBL0000503</td></tr>`,
+      `<tr><td style="padding: 5px 0; font-weight: bold;">Account Name:</td><td style="padding: 5px 0;">AGASTHYADHANAM</td></tr>`,
+      `<tr><td style="padding: 5px 0; font-weight: bold;">Branch:</td><td style="padding: 5px 0;">SIB Sasthamangalam Branch</td></tr>`,
+      `<tr><td style="padding: 5px 0; font-weight: bold;">Amount:</td><td style="padding: 5px 0;">₹5,000 per person (Local), ₹10,000 per person (Foreigner)</td></tr>`,
+      `</table>`,
+      `</div>`,
+      webAppUrl ? `<div style="text-align:center; margin:20px 0;"><a href="${webAppUrl}" style="background-color:#2E7D32;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;font-weight:bold;">Open Registration</a></div>` : '',
       `<br><p style="color:#555;">Regards,<br><strong>Thiruvananthapuram Wildlife Division</strong></p>`,
       `</div>`
     ].join('');
@@ -326,34 +344,33 @@ function authorizeEmail(email, maxTrekkers, allowedDate) {
 }
 
 // ====== User Authorization & Status ======
-// ====== User Authorization & Status (CORRECTED) ======
 function userLoginStatus(email) {
   email = (email || '').trim().toLowerCase();
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const authSheet = ss.getSheetByName('AuthorizedEmails');
   let allowedCount = 10;
   let allowedDate = '';
-  
+
   if (!authSheet) {
     return { status: "unauthorized", message: "Email not authorized. Please contact the office." };
   }
-  
+
   const last = authSheet.getLastRow();
   if (last > 1) {
     const lastCol = Math.max(1, authSheet.getLastColumn());
     const vals = authSheet.getRange(2, 1, last - 1, lastCol).getValues();
     const found = vals.find(r => (r[0] + '').toLowerCase() === email);
-    
+
     if (!found) {
       return { status: "unauthorized", message: "Email not authorized. Please contact the office." };
     }
-    
+
     if (found.length >= 2 && found[1] !== '' && !isNaN(Number(found[1]))) {
       allowedCount = Math.max(1, Math.min(10, Number(found[1])));
     } else {
       allowedCount = 10;
     }
-    
+
     if (found.length >= 3 && (found[2] || '').toString().trim()) {
       allowedDate = normalizeToDDMMYYYY(found[2].toString().trim());
     } else {
@@ -368,36 +385,36 @@ function userLoginStatus(email) {
   if (!regSheet) {
     return { status: "not_registered", message: "Authorized. Please register.", allowedCount: allowedCount, allowedDate: allowedDate };
   }
-  
+
   const regRows = Math.max(0, regSheet.getLastRow() - 1);
   if (regRows > 0) {
     const headers = regSheet.getRange(1, 1, 1, regSheet.getLastColumn()).getValues()[0];
     const data = regSheet.getRange(2, 1, regRows, regSheet.getLastColumn()).getValues();
-    
+
     let ticketIssuedFound = false;
     let pendingFound = false;
     let pendingTrekDate = '';
-    
+
     for (let i = 0; i < data.length; i++) {
       const rowEmail = (data[i][headers.indexOf('Email')] + '').toLowerCase();
-      
+
       if (rowEmail === email) {
         const status = (data[i][headers.indexOf('Status')] + '').trim();
         const trekDate = data[i][headers.indexOf('Trek Date')];
         const trekDateDMY = formatDateDDMMYYYY(trekDate);
-        
+
         // Check for Ticket Issued
         if (status === "Ticket Issued") {
           ticketIssuedFound = true;
-          return { 
-            status: "ticket_issued", 
-            message: "Your Ticket is already issued, Please check your Authorized email", 
-            trekDate: trekDateDMY, 
-            allowedCount: allowedCount, 
-            allowedDate: allowedDate 
+          return {
+            status: "ticket_issued",
+            message: "Your Ticket is already issued, Please check your Authorized email",
+            trekDate: trekDateDMY,
+            allowedCount: allowedCount,
+            allowedDate: allowedDate
           };
         }
-        
+
         // Track pending status
         if (status === "Pending" && !pendingFound) {
           pendingFound = true;
@@ -405,25 +422,25 @@ function userLoginStatus(email) {
         }
       }
     }
-    
+
     // Return pending status if found
     if (pendingFound) {
-      return { 
-        status: "processing", 
-        message: "Your Application is under processing, Ticket will be issued soon", 
-        trekDate: pendingTrekDate, 
-        allowedCount: allowedCount, 
-        allowedDate: allowedDate 
+      return {
+        status: "processing",
+        message: "Your Application is under processing, Ticket will be issued soon",
+        trekDate: pendingTrekDate,
+        allowedCount: allowedCount,
+        allowedDate: allowedDate
       };
     }
   }
-  
+
   // No registration found
   return { status: "not_registered", message: "Authorized. Please register.", allowedCount: allowedCount, allowedDate: allowedDate };
 }
 
 // ====== Submit Registration with Receipt Upload ======
-function submitRegistration(email, trekDate, amount, paymentId, trekkers, receiptObj, submissionId) {
+function submitRegistration(email, trekDate, amount, paymentId, trekkers, receiptObj, submissionId, emergencyContact) {
   var lock = LockService.getScriptLock();
   try {
     lock.waitLock(10000);
@@ -434,6 +451,14 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
   try {
     email = (email || '').toString().trim().toLowerCase();
     if (!email) return { success: false, message: 'Invalid email.' };
+
+    // Emergency contact is required (group-level)
+    emergencyContact = (emergencyContact || '').toString().trim();
+    var normalizedEmergency = emergencyContact.replace(/\s+/g, '');
+    var digitsOnly = normalizedEmergency.replace(/[^\d]/g, '');
+    if (!emergencyContact || digitsOnly.length < 7) {
+      return { success: false, message: 'Emergency contact is required and must be a valid phone number.' };
+    }
 
     if (!Array.isArray(trekkers) || trekkers.length < 1 || trekkers.length > 10) {
       return { success: false, message: 'Number of trekkers must be between 1 and 10.' };
@@ -450,9 +475,9 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
     var sheet = ss.getSheetByName('Registrations');
     if (!sheet) {
       sheet = ss.insertSheet('Registrations');
-      sheet.getRange(1,1,1,16).setValues([[ 
+      sheet.getRange(1,1,1,18).setValues([[
         'Email','Trek Date','Amount Remitted','Payment ID','No. of Trekkers','Status','Timestamp',
-        'Trekker Name','Gender','Age','ID Type','ID Number','Mobile Number','Ticket No','SubmissionId','PaymentReceiptFileId'
+        'Trekker Name','Gender','Age','ID Type','ID Number','Mobile Number','Emergency Contact','Is Foreigner','Ticket No','SubmissionId','PaymentReceiptFileId'
       ]]);
     } else {
       var headers = sheet.getRange(1, 1, 1, Math.max(1, sheet.getLastColumn())).getValues()[0];
@@ -464,6 +489,16 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
       if (headers.indexOf('PaymentReceiptFileId') === -1) {
         sheet.insertColumnAfter(sheet.getLastColumn());
         sheet.getRange(1, sheet.getLastColumn()).setValue('PaymentReceiptFileId');
+      }
+      headers = sheet.getRange(1,1,1,Math.max(1,sheet.getLastColumn())).getValues()[0];
+      if (headers.indexOf('Emergency Contact') === -1) {
+        sheet.insertColumnAfter(headers.length);
+        sheet.getRange(1, headers.length + 1).setValue('Emergency Contact');
+      }
+      headers = sheet.getRange(1,1,1,Math.max(1,sheet.getLastColumn())).getValues()[0];
+      if (headers.indexOf('Is Foreigner') === -1) {
+        sheet.insertColumnAfter(headers.length);
+        sheet.getRange(1, headers.length + 1).setValue('Is Foreigner');
       }
     }
 
@@ -491,9 +526,18 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
       }
     }
 
-    var expected = getFeePerPerson() * trekkers.length;
+    var localFee = Number(getFeePerPerson()) || 0;
+    // read foreigner fee from Config; fallback to localFee
+    var foreignFee = Number(getConfigValue('FeePerPersonForeigner')) || localFee;
+    var expected = 0;
+    for (var ti = 0; ti < trekkers.length; ti++) {
+      var t = trekkers[ti];
+      var isF = !!t.isForeigner;
+      expected += isF ? foreignFee : localFee;
+    }
+
     if (Number(amount) !== expected) {
-      return { success: false, message: 'Amount mismatch. Expected ' + expected + ' for ' + trekkers.length + ' trekkers.' };
+      return { success: false, message: 'Amount mismatch. Expected ' + expected + ' for provided trekkers and categories.' };
     }
 
     var receiptFileId = '';
@@ -514,6 +558,8 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
     headerRow = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
     var receiptColIdx = headerRow.indexOf('PaymentReceiptFileId');
     var submissionColIdx = headerRow.indexOf('SubmissionId');
+    var emergencyColIdx = headerRow.indexOf('Emergency Contact');
+    var isForeignerColIdx = headerRow.indexOf('Is Foreigner');
 
     for (var k = 0; k < trekkers.length; k++) {
       var t = trekkers[k];
@@ -531,6 +577,8 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
       row[headerRow.indexOf('ID Type')] = t.idType;
       row[headerRow.indexOf('ID Number')] = t.idNumber;
       row[headerRow.indexOf('Mobile Number')] = t.mobile;
+      if (emergencyColIdx !== -1) row[emergencyColIdx] = emergencyContact;
+      if (isForeignerColIdx !== -1) row[isForeignerColIdx] = t.isForeigner ? 'Yes' : 'No';
       if (submissionColIdx !== -1) row[submissionColIdx] = submissionId || '';
       if (receiptColIdx !== -1) row[receiptColIdx] = receiptFileId || '';
       while (row.length < headerRow.length) row.push('');
@@ -643,7 +691,7 @@ function getGroupDetails(email, date) {
   const headers = data[0].map(h => (h || '').toString());
   const emailIdx = headers.findIndex(h => (h || '').toLowerCase() === 'email');
   const trekDateIdx = headers.findIndex(h => (h || '').toLowerCase() === 'trek date' || (h || '').toLowerCase() === 'trekdate');
-  const receiptIdx = headers.findIndex(h => (h || '').toLowerCase() === 'paymentreceiptfileid' || (h || '').toLowerCase() === 'payment receipt fileid' || (h || '').toLowerCase() === 'payment receipt file id');
+  const receiptIdx = headers.findIndex(h => (h || '').toLowerCase() === 'paymentreceiptfileid' || (h || '').toLowerCase() === 'payment receipt fileid' || (h || '').toLowerCase() === 'payment receip');
 
   const trekDateDMY = formatDateDDMMYYYY(date);
 
@@ -662,7 +710,7 @@ function getGroupDetails(email, date) {
     Email: firstRow[emailIdx],
     'Trek Date': trekDateDMY,
     'Amount Remitted': firstRow[headers.findIndex(h => (h || '').toLowerCase() === 'amount remitted' || (h || '').toLowerCase() === 'amount')],
-    'Payment ID': firstRow[headers.findIndex(h => (h || '').toLowerCase() === 'payment id' || (h || '').toLowerCase() === 'paymentid')],
+    'Payment ID': toPlainNumberString(firstRow[headers.findIndex(h => (h || '').toLowerCase() === 'payment id' || (h || '').toLowerCase() === 'paymentid')]) || '',
     'Ticket No': firstRow[headers.findIndex(h => (h || '').toLowerCase() === 'ticket no' || (h || '').toLowerCase() === 'ticketno')] || '',
     Status: firstRow[headers.findIndex(h => (h || '').toLowerCase() === 'status')] || '',
     PaymentReceiptFileId: receiptIdx !== -1 ? (firstRow[receiptIdx] || '') : ''
@@ -677,20 +725,25 @@ function getGroupDetails(email, date) {
     groupDetails.ReceiptViewUrl = '';
   }
 
+  const emergencyIdx = headers.findIndex(h => (h || '').toLowerCase() === 'emergency contact');
+  groupDetails['Emergency Contact'] = emergencyIdx !== -1 ? (firstRow[emergencyIdx] || '') : '';
+
   const nameIdx = headers.findIndex(h => (h || '').toLowerCase() === 'trekker name' || (h || '').toLowerCase() === 'name');
   const genderIdx = headers.findIndex(h => (h || '').toLowerCase() === 'gender');
   const ageIdx = headers.findIndex(h => (h || '').toLowerCase() === 'age');
   const idTypeIdx = headers.findIndex(h => (h || '').toLowerCase() === 'id type' || (h || '').toLowerCase() === 'photo id type');
   const idNumberIdx = headers.findIndex(h => (h || '').toLowerCase() === 'id number' || (h || '').toLowerCase() === 'idnumber');
   const mobileIdx = headers.findIndex(h => (h || '').toLowerCase() === 'mobile number' || (h || '').toLowerCase() === 'mobile');
+  const isForeignerIdx = headers.findIndex(h => (h || '').toLowerCase() === 'is foreigner');
 
   groupDetails.Trekkers = rows.map(row => ({
     Name: nameIdx !== -1 ? row[nameIdx] : '',
     Gender: genderIdx !== -1 ? row[genderIdx] : '',
     Age: ageIdx !== -1 ? row[ageIdx] : '',
     'Photo ID Type': idTypeIdx !== -1 ? row[idTypeIdx] : '',
-    'ID Number': idNumberIdx !== -1 ? row[idNumberIdx] : '',
-    'Mobile Number': mobileIdx !== -1 ? row[mobileIdx] : ''
+    'ID Number': idNumberIdx !== -1 ? toPlainNumberString(row[idNumberIdx]) : '',
+    'Mobile Number': mobileIdx !== -1 ? toPlainNumberString(row[mobileIdx]) : '',
+    'Is Foreigner': isForeignerIdx !== -1 ? ( (row[isForeignerIdx] || '').toString().trim() === 'Yes' ) : false
   }));
 
   return groupDetails;
@@ -968,21 +1021,29 @@ function issueTicketAndEmail(email, date) {
 
   const firstRow = groupRows[0].row;
   const amountRemitted = firstRow[headers.indexOf('Amount Remitted')];
-  const paymentId = firstRow[headers.indexOf('Payment ID')];
+  const paymentId = toPlainNumberString(firstRow[headers.indexOf('Payment ID')]);
+  const emergencyIdx = headers.findIndex(h => (h || '').toLowerCase() === 'emergency contact');
+  const emergencyContact = emergencyIdx !== -1 ? (firstRow[emergencyIdx] || '') : '';
+
   const groupDetails = {
     trekDate: trekDateDMY,
     amountRemitted: amountRemitted,
     paymentId: paymentId,
     ticketNo: ticketNo,
-    email: email
+    email: email,
+    emergencyContact: emergencyContact
   };
   const trekkers = groupRows.map(({ row }) => ({
     name: row[headers.indexOf('Trekker Name')],
     gender: row[headers.indexOf('Gender')],
     age: row[headers.indexOf('Age')],
     idType: row[headers.indexOf('ID Type')],
-    idNumber: row[headers.indexOf('ID Number')],
-    mobile: row[headers.indexOf('Mobile Number')]
+    idNumber: toPlainNumberString(row[headers.indexOf('ID Number')]),
+    mobile: toPlainNumberString(row[headers.indexOf('Mobile Number')]),
+    isForeigner: (function(){
+      var idx = headers.indexOf('Is Foreigner');
+      return idx !== -1 ? ((row[idx]||'').toString().trim() === 'Yes') : false;
+    })()
   }));
 
   try {
@@ -991,15 +1052,14 @@ function issueTicketAndEmail(email, date) {
       const LOGO_FILE_ID = getLogoFileIdFromConfig();
       logoDataUri = LOGO_FILE_ID ? getImageDataUrlFromDrive(LOGO_FILE_ID) : '';
     }
-    
-    // ====== CRITICAL FIX: Generate QR Code Data URL ======
+
     const qrDataUrl = generateQrDataUrl(ticketNo, 300);
 
     const htmlTemplate = HtmlService.createTemplateFromFile('Ticket');
     htmlTemplate.groupDetails = groupDetails;
     htmlTemplate.trekkers = trekkers;
     htmlTemplate.logoDataUrl = logoDataUri;
-    htmlTemplate.qrDataUrl = qrDataUrl;  // ====== PASS QR CODE TO TEMPLATE ======
+    htmlTemplate.qrDataUrl = qrDataUrl;
     const ticketHtml = htmlTemplate.evaluate().getContent();
 
     const pdfBlob = Utilities.newBlob(ticketHtml, 'text/html')
@@ -1023,94 +1083,94 @@ function issueTicketAndEmail(email, date) {
 
 function createEmailBody(groupDetails, trekkers) {
   var html = `
-<!DOCTYPE html>
-<html>
-<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto;">
-  <div style="text-align: center; padding: 20px 0; border-bottom: 3px solid #0b60a5;">
-    <h1 style="color: #0b60a5; margin: 10px 0;">KERALA FOREST & WILDLIFE DEPARTMENT</h1>
-    <h3 style="color: #1b5e20; margin: 5px 0;">Agasthyarkoodam Trekking 2026</h3>
-    <h2 style="color: #2563eb; margin: 15px 0;">BOOKING CONFIRMED</h2>
-  </div>
+ <!DOCTYPE html>
+ <html>
+ <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto;">
+   <div style="text-align: center; padding: 20px 0; border-bottom: 3px solid #0b60a5;">
+     <h1 style="color: #0b60a5; margin: 10px 0;">KERALA FOREST & WILDLIFE DEPARTMENT</h1>
+     <h3 style="color: #1b5e20; margin: 5px 0;">Agasthyarkoodam Trekking 2026</h3>
+     <h2 style="color: #2563eb; margin: 15px 0;">BOOKING CONFIRMED</h2>
+   </div>
 
-  <div style="background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 5px;">
-    <h3 style="color: #2563eb; margin-top: 0;">📋 Booking Details</h3>
-    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-      <tr>
-        <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold; width: 40%;">Ticket Number:</td>
-        <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>${groupDetails.ticketNo}</strong></td>
-      </tr>
-      <tr>
-        <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold;">Trek Date:</td>
-        <td style="padding: 10px; border-bottom: 1px solid #ddd;">${groupDetails.trekDate}</td>
-      </tr>
-      <tr>
-        <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold;">Number of Trekkers:</td>
-        <td style="padding: 10px; border-bottom: 1px solid #ddd;">${trekkers.length}</td>
-      </tr>
-      <tr>
-        <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold;">Amount Paid:</td>
-        <td style="padding: 10px; border-bottom: 1px solid #ddd;">₹ ${groupDetails.amountRemitted}</td>
-      </tr>
-      <tr>
-        <td style="padding: 10px; font-weight: bold;">Payment ID:</td>
-        <td style="padding: 10px;">${groupDetails.paymentId || 'N/A'}</td>
-      </tr>
-    </table>
-  </div>
+   <div style="background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 5px;">
+     <h3 style="color: #2563eb; margin-top: 0;">📋 Booking Details</h3>
+     <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+       <tr>
+         <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold; width: 40%;">Ticket Number:</td>
+         <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>${groupDetails.ticketNo}</strong></td>
+       </tr>
+       <tr>
+         <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold;">Trek Date:</td>
+         <td style="padding: 10px; border-bottom: 1px solid #ddd;">${groupDetails.trekDate}</td>
+       </tr>
+       <tr>
+         <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold;">Number of Trekkers:</td>
+         <td style="padding: 10px; border-bottom: 1px solid #ddd;">${trekkers.length}</td>
+       </tr>
+       <tr>
+         <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold;">Amount Paid:</td>
+         <td style="padding: 10px; border-bottom: 1px solid #ddd;">₹ ${groupDetails.amountRemitted}</td>
+       </tr>
+       <tr>
+         <td style="padding: 10px; font-weight: bold;">Payment ID:</td>
+         <td style="padding: 10px;">${groupDetails.paymentId || 'N/A'}</td>
+       </tr>
+     </table>
+   </div>
 
-  <div style="background: #e8f5e9; padding: 20px; border-radius: 5px; margin: 20px 0;">
-    <h3 style="color: #1b5e20; margin-top: 0;">✅ What's Next?</h3>
-    <ol style="margin: 15px 0; padding-left: 20px;">
-      <li style="margin-bottom: 10px;"><strong>Download the PDF</strong> attached to this email</li>
-      <li style="margin-bottom: 10px;"><strong>Print all 5 pages</strong> on A4 paper</li>
-      <li style="margin-bottom: 10px;"><strong>Complete these documents:</strong>
-        <ul style="margin: 5px 0; padding-left: 20px;">
-          <li>Medical Certificate (Page 3)</li>
-          <li>Affidavit (Page 4)</li>
-          <li>Consent Form for minors (Page 5)</li>
-        </ul>
-      </li>
-      <li style="margin-bottom: 10px;"><strong>Bring to trek:</strong>
-        <ul style="margin: 5px 0; padding-left: 20px;">
-          <li>Printed ticket</li>
-          <li>Original photo ID</li>
-          <li>Medical certificate</li>
-          <li>Signed affidavit</li>
-        </ul>
-      </li>
-    </ol>
-  </div>
+   <div style="background: #e8f5e9; padding: 20px; border-radius: 5px; margin: 20px 0;">
+     <h3 style="color: #1b5e20; margin-top: 0;">✅ What's Next?</h3>
+     <ol style="margin: 15px 0; padding-left: 20px;">
+       <li style="margin-bottom: 10px;"><strong>Download the PDF</strong> attached to this email</li>
+       <li style="margin-bottom: 10px;"><strong>Print all 5 pages</strong> on A4 paper</li>
+       <li style="margin-bottom: 10px;"><strong>Complete these documents:</strong>
+         <ul style="margin: 5px 0; padding-left: 20px;">
+           <li>Medical Certificate (Page 3)</li>
+           <li>Affidavit (Page 4)</li>
+           <li>Consent Form for minors (Page 5)</li>
+         </ul>
+       </li>
+       <li style="margin-bottom: 10px;"><strong>Bring to trek:</strong>
+         <ul style="margin: 5px 0; padding-left: 20px;">
+           <li>Printed ticket</li>
+           <li>Original photo ID</li>
+           <li>Medical certificate</li>
+           <li>Signed affidavit</li>
+         </ul>
+       </li>
+     </ol>
+   </div>
 
-  <div style="background: #fff3cd; padding: 15px; border: 1px solid #ffeaa7; border-radius: 3px; margin: 20px 0;">
-    <h4 style="color: #856404; margin-top: 0;">⏰ Important Notes:</h4>
-    <p style="margin: 10px 0;"><strong>Reporting Time:</strong> 7:00 AM</p>
-    <p style="margin: 10px 0;"><strong>Reporting Place:</strong> Forest Picket Station, Bonaccord</p>
-    <p style="margin: 10px 0;"><strong>Entry Requirements:</strong> Valid only with signed affidavit</p>
-  </div>
+   <div style="background: #fff3cd; padding: 15px; border: 1px solid #ffeaa7; border-radius: 3px; margin: 20px 0;">
+     <h4 style="color: #856404; margin-top: 0;">⏰ Important Notes:</h4>
+     <p style="margin: 10px 0;"><strong>Reporting Time:</strong> 7:00 AM</p>
+     <p style="margin: 10px 0;"><strong>Reporting Place:</strong> Forest Picket Station, Bonaccord</p>
+     <p style="margin: 10px 0;"><strong>Entry Requirements:</strong> Valid only with signed affidavit</p>
+   </div>
 
-  <div style="text-align: center; margin: 30px 0;">
-    <div style="background: #2563eb; color: white; padding: 15px 30px; display: inline-block; border-radius: 4px;">
-      <p style="margin: 0; font-size: 16px;"><strong>Your ticket PDF is attached 📎</strong></p>
-    </div>
-  </div>
+   <div style="text-align: center; margin: 30px 0;">
+     <div style="background: #2563eb; color: white; padding: 15px 30px; display: inline-block; border-radius: 4px;">
+       <p style="margin: 0; font-size: 16px;"><strong>Your ticket PDF is attached 📎</strong></p>
+     </div>
+   </div>
 
-  <div style="background: #e3f2fd; padding: 15px; border-radius: 5px; margin: 20px 0; font-size: 13px;">
-    <h4 style="color: #1565c0; margin-top: 0;">📞 Contact Information</h4>
-    <p style="margin: 5px 0;"><strong>Wildlife Warden Office:</strong></p>
-    <p style="margin: 5px 0;">📍 PTP Nagar, Thiruvananthapuram</p>
-    <p style="margin: 5px 0;">📞 0471-2360762 / 8129782524</p>
-    <p style="margin: 5px 0;">📧 wildlife.tvm@kerala.gov.in</p>
-  </div>
+   <div style="background: #e3f2fd; padding: 15px; border-radius: 5px; margin: 20px 0; font-size: 13px;">
+     <h4 style="color: #1565c0; margin-top: 0;">📞 Contact Information</h4>
+     <p style="margin: 5px 0;"><strong>Wildlife Warden Office:</strong></p>
+     <p style="margin: 5px 0;">📍 PTP Nagar, Thiruvananthapuram</p>
+     <p style="margin: 5px 0;">📞 0471-2360762 / 8129782524</p>
+     <p style="margin: 5px 0;">📧 wildlife.tvm@kerala.gov.in</p>
+   </div>
 
-  <div style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px; text-align: center;">
-    <p><strong>Kerala Forest & Wildlife Department</strong><br>
-    Thiruvananthapuram Wildlife Division</p>
-    <p style="color: #1b5e20; margin-top: 10px; font-style: italic;">അഗസ്ത്യാർകൂടം സീസൺ ട്രക്കിംഗ് - 2026</p>
-    <p style="margin-top: 10px;">SAVE FOREST • SAVE WATER • SAVE WILDLIFE</p>
-  </div>
-</body>
-</html>
-  `;
+   <div style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px; text-align: center;">
+     <p><strong>Kerala FOREST & WILDLIFE DEPARTMENT</strong><br>
+     Thiruvananthapuram Wildlife Division</p>
+     <p style="color: #1b5e20; margin-top: 10px; font-style: italic;">അഗസ്ത്യാർകൂടം സീസൺ ട്രക്കിംഗ് - 2026</p>
+     <p style="margin-top: 10px;">SAVE FOREST • SAVE WATER • SAVE WILDLIFE</p>
+   </div>
+ </body>
+ </html>
+   `;
   return html;
 }
 
@@ -1159,8 +1219,12 @@ function userTicketLogin(email) {
         Gender: row[headers.indexOf('Gender')],
         Age: row[headers.indexOf('Age')],
         'Photo ID Type': row[headers.indexOf('ID Type')],
-        'ID Number': row[headers.indexOf('ID Number')],
-        'Mobile Number': row[headers.indexOf('Mobile Number')]
+        'ID Number': toPlainNumberString(row[headers.indexOf('ID Number')]),
+        'Mobile Number': toPlainNumberString(row[headers.indexOf('Mobile Number')]),
+        'Is Foreigner': (function(){
+          var idx = headers.indexOf('Is Foreigner');
+          return idx !== -1 ? ((row[idx]||'').toString().trim() === 'Yes') : false;
+        })()
       }))
     }
   };
@@ -1248,8 +1312,8 @@ function getIssuedTrekkersReport(dateFromStr, dateToStr) {
           Gender: data[i][genderIdx] || '',
           Age: data[i][ageIdx] || '',
           IDType: data[i][idTypeIdx] || '',
-          IDNumber: data[i][idNumberIdx] || '',
-          Mobile: data[i][mobileIdx] || '',
+          IDNumber: toPlainNumberString(data[i][idNumberIdx]) || '',
+          Mobile: toPlainNumberString(data[i][mobileIdx]) || '',
           TrekDate: trekDateStr,
           AmountRemitted: amt
         });
@@ -1318,7 +1382,8 @@ function apiDownloadTicketPDF(email, trekDate) {
     trekDate: groupData['Trek Date'],
     email: groupData.Email,
     amountRemitted: groupData['Amount Remitted'],
-    paymentId: groupData['Payment ID']
+    paymentId: groupData['Payment ID'],
+    emergencyContact: groupData['Emergency Contact'] || ''
   };
   const trekkers = groupData.Trekkers.map(trekker => ({
     name: trekker.Name,
@@ -1326,7 +1391,8 @@ function apiDownloadTicketPDF(email, trekDate) {
     age: trekker.Age,
     idType: trekker['Photo ID Type'],
     idNumber: trekker['ID Number'],
-    mobile: trekker['Mobile Number']
+    mobile: trekker['Mobile Number'],
+    isForeigner: trekker['Is Foreigner']
   }));
 
   let logoDataUri = getLogoDataUriFromConfig();
@@ -1347,32 +1413,32 @@ function apiDownloadTicketPDF(email, trekDate) {
 }
 
 // ====== API Wrappers (Exposed to Client) ======
-function apiUserTicketLogin(email) { 
-  return userTicketLogin(email); 
+function apiUserTicketLogin(email) {
+  return userTicketLogin(email);
 }
 
-function apiAdminGetGroupTicket(email, trekDate) { 
-  return getGroupDetails(email, trekDate); 
+function apiAdminGetGroupTicket(email, trekDate) {
+  return getGroupDetails(email, trekDate);
 }
 
-function apiGetAllIssuedTickets() { 
-  return getAllIssuedTickets(); 
+function apiGetAllIssuedTickets() {
+  return getAllIssuedTickets();
 }
 
-function apiGetIssuedTrekkersReport(dateFrom, dateTo) { 
-  return getIssuedTrekkersReport(dateFrom, dateTo); 
+function apiGetIssuedTrekkersReport(dateFrom, dateTo) {
+  return getIssuedTrekkersReport(dateFrom, dateTo);
 }
 
-function apiUserLoginStatus(email) { 
-  return userLoginStatus(email); 
+function apiUserLoginStatus(email) {
+  return userLoginStatus(email);
 }
 
-function apiGetFeePerPerson() { 
-  return getFeePerPerson(); 
+function apiGetFeePerPerson() {
+  return getFeePerPerson();
 }
 
-function apiUpdatePaymentId(email, trekDate, paymentId) { 
-  return updatePaymentId(email, trekDate, paymentId); 
+function apiUpdatePaymentId(email, trekDate, paymentId) {
+  return updatePaymentId(email, trekDate, paymentId);
 }
 
 // ====== Admin: Delete Group ======
@@ -1493,27 +1559,26 @@ function deleteAuthorizedEmail(email) {
 }
 
 // ====== Admin: Get Yet to Register Emails ======
-// ====== Admin: Get Yet to Register Emails (with sorting) ======
 function getYetToRegisterEmails() {
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var authSheet = ss.getSheetByName('AuthorizedEmails');
     var regSheet = ss.getSheetByName('Registrations');
-    
+
     if (!authSheet) return [];
-    
+
     var authData = authSheet.getDataRange().getValues();
     if (!authData || authData.length <= 1) return [];
-    
+
     var authHeaders = authData[0].map(h => (h || '').toString());
     var emailIdx = authHeaders.findIndex(h => (h || '').toLowerCase() === 'authorized email' || (h || '').toLowerCase() === 'email');
     var maxIdx = authHeaders.findIndex(h => (h || '').toLowerCase() === 'maxtrekkers' || (h || '').toLowerCase() === 'max trekkers');
     var dateIdx = authHeaders.findIndex(h => (h || '').toLowerCase() === 'alloweddate' || (h || '').toLowerCase() === 'allowed date');
-    
+
     if (emailIdx === -1) emailIdx = 0;
     if (maxIdx === -1) maxIdx = 1;
     if (dateIdx === -1) dateIdx = 2;
-    
+
     var registeredEmails = new Set();
     if (regSheet) {
       var regData = regSheet.getDataRange().getValues();
@@ -1530,36 +1595,34 @@ function getYetToRegisterEmails() {
         }
       }
     }
-    
+
     var out = [];
     for (var i = 1; i < authData.length; i++) {
       var row = authData[i];
       var email = (row[emailIdx] || '').toString().toLowerCase().trim();
-      
+
       if (email && !registeredEmails.has(email)) {
         var allowedDateStr = dateIdx !== -1 ? formatDateDDMMYYYY(row[dateIdx]) : '';
         var item = {
           Email: email,
           MaxTrekkers: maxIdx !== -1 ? row[maxIdx] : '',
           AllowedDate: allowedDateStr,
-          AllowedDateSort: parseDateDMY(allowedDateStr) // for sorting
+          AllowedDateSort: parseDateDMY(allowedDateStr)
         };
         out.push(item);
       }
     }
-    
-    // Sort by AllowedDate in ascending order (earliest first)
+
     out.sort(function(a, b) {
       var dateA = a.AllowedDateSort ? a.AllowedDateSort.getTime() : 0;
       var dateB = b.AllowedDateSort ? b.AllowedDateSort.getTime() : 0;
       return dateA - dateB;
     });
-    
-    // Remove the temporary sorting field
+
     out.forEach(function(item) {
       delete item.AllowedDateSort;
     });
-    
+
     return out;
   } catch (e) {
     return [];
@@ -1593,14 +1656,14 @@ function deleteYetToRegisterEmail(email) {
   try {
     email = (email || '').toString().trim().toLowerCase();
     if (!email) return { success: false, message: 'Invalid email.' };
-    
+
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var authSheet = ss.getSheetByName('AuthorizedEmails');
     if (!authSheet) return { success: false, message: 'AuthorizedEmails sheet not found.' };
 
     var data = authSheet.getDataRange().getValues();
     if (!data || data.length <= 1) return { success: false, message: 'No authorized emails.' };
-    
+
     var headers = data[0].map(h => (h || '').toString());
     var emailIdx = headers.findIndex(h => (h || '').toLowerCase() === 'authorized email' || (h || '').toLowerCase() === 'email');
 
@@ -1614,7 +1677,7 @@ function deleteYetToRegisterEmail(email) {
         found = true;
       }
     }
-    
+
     if (!found) return { success: false, message: 'Email not found in authorized list.' };
     return { success: true, message: 'Authorization deleted successfully.' };
   } catch (err) {
@@ -1623,11 +1686,12 @@ function deleteYetToRegisterEmail(email) {
     try { lock.releaseLock(); } catch (e) {}
   }
 }
+
 // ====== Download Summary Report PDF ======
 function apiDownloadSummaryReportPDF(dateFrom, dateTo) {
   const reportData = getSummaryReport(dateFrom, dateTo);
   const summary = reportData.summary;
-  
+
   let tableHtml = `
     <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
       <thead>
@@ -1643,12 +1707,12 @@ function apiDownloadSummaryReportPDF(dateFrom, dateTo) {
       </thead>
       <tbody>
   `;
-  
+
   summary.forEach((row, idx) => {
     const isTotal = row.Date === 'TOTAL';
     const bgColor = isTotal ? '#f0f0f0' : (idx % 2 === 0 ? '#ffffff' : '#f8f9ff');
     const fontWeight = isTotal ? 'bold' : 'normal';
-    
+
     tableHtml += `
       <tr style="background: ${bgColor};">
         <td style="border: 1px solid #ddd; padding: 10px; font-weight: ${fontWeight};">${row.Date}</td>
@@ -1661,9 +1725,9 @@ function apiDownloadSummaryReportPDF(dateFrom, dateTo) {
       </tr>
     `;
   });
-  
+
   tableHtml += `</tbody></table>`;
-  
+
   const html = `
     <!DOCTYPE html>
     <html>
@@ -1679,9 +1743,9 @@ function apiDownloadSummaryReportPDF(dateFrom, dateTo) {
           Report Period: ${dateFrom} to ${dateTo}
         </p>
       </div>
-      
+
       ${tableHtml}
-      
+
       <div style="margin-top: 40px; text-align: center; color: #666; font-size: 12px;">
         <p>Generated on: ${new Date().toLocaleString()}</p>
         <p>Thiruvananthapuram Wildlife Division</p>
@@ -1689,16 +1753,17 @@ function apiDownloadSummaryReportPDF(dateFrom, dateTo) {
     </body>
     </html>
   `;
-  
+
   const pdfBlob = Utilities.newBlob(html, 'text/html').getAs('application/pdf');
   return Utilities.base64Encode(pdfBlob.getBytes());
 }
+
 // ====== STATISTICS FUNCTIONS ======
 function getStatistics() {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const regSheet = ss.getSheetByName('Registrations');
-    
+
     if (!regSheet) {
       return {
         totalRegistrations: 0,
@@ -1745,17 +1810,15 @@ function getStatistics() {
 
     for (let i = 1; i < data.length; i++) {
       const row = data[i];
-      
-      // Get unique group identifier
+
       const email = (row[emailIdx] || '').toString().toLowerCase();
       const trekDate = formatDateDDMMYYYY(row[trekDateIdx]);
       const groupKey = email + '||' + trekDate;
 
-      // Status and Revenue (count once per group)
       if (!processedGroups.has(groupKey)) {
         processedGroups.add(groupKey);
         stats.totalRegistrations++;
-        
+
         const status = (row[statusIdx] || '').toString().trim();
         if (status === 'Pending') {
           stats.pendingApprovals++;
@@ -1768,24 +1831,20 @@ function getStatistics() {
         const amount = Number(row[amountIdx]) || 0;
         stats.totalRevenue += amount;
 
-        // Revenue by Trek Date
         if (!stats.revenueByDate[trekDate]) {
           stats.revenueByDate[trekDate] = 0;
         }
         stats.revenueByDate[trekDate] += amount;
 
-        // Trek Date Breakdown
         if (!stats.trekDateBreakdown[trekDate]) {
           stats.trekDateBreakdown[trekDate] = 0;
         }
         stats.trekDateBreakdown[trekDate]++;
 
-        // Number of Trekkers
         const noOfTrekkers = Number(row[noOfTrkkersIdx]) || 1;
         stats.totalTrekkers += noOfTrekkers;
       }
 
-      // Gender and Age (per trekker)
       const gender = (row[genderIdx] || '').toString().trim();
       if (gender && stats.genderDistribution.hasOwnProperty(gender)) {
         stats.genderDistribution[gender]++;
@@ -1801,8 +1860,7 @@ function getStatistics() {
       }
     }
 
-    // Calculate average trekkers per group
-    stats.averageTrkkersPerGroup = stats.totalRegistrations > 0 
+    stats.averageTrkkersPerGroup = stats.totalRegistrations > 0
       ? (stats.totalTrekkers / stats.totalRegistrations).toFixed(2)
       : 0;
 
@@ -1812,8 +1870,8 @@ function getStatistics() {
     return null;
   }
 }
+
 // ====== NEW: Summary Report Functions ======
-// ====== CORRECTED: Summary Report Functions ======
 function getSummaryReport(dateFromStr, dateToStr) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName('Registrations');
@@ -1841,16 +1899,13 @@ function getSummaryReport(dateFromStr, dateToStr) {
   const dateFrom = parseDMY(dateFromStr);
   const dateTo = parseDMY(dateToStr);
 
-  // Track unique groups to ensure we count amount only once per group
   const processedGroupsForAmount = new Set();
-  
-  // Organize data by date
   const summaryMap = {};
 
   for (let i = 1; i < data.length; i++) {
     const status = (data[i][statusIdx] || "").toString().toLowerCase();
     const trekDateStr = formatDateDDMMYYYY(data[i][trekDateIdx]);
-    
+
     if (status === "ticket issued" && trekDateStr) {
       let trekDate = parseDMY(trekDateStr);
       if (!trekDate || isNaN(trekDate.getTime())) continue;
@@ -1873,10 +1928,8 @@ function getSummaryReport(dateFromStr, dateToStr) {
         };
       }
 
-      // Count trekkers (once per row, as each row is one trekker)
       summaryMap[dateKey].trekkers += 1;
 
-      // Count gender (once per row, as each row is one trekker)
       if (gender.toLowerCase() === 'male') {
         summaryMap[dateKey].male += 1;
       } else if (gender.toLowerCase() === 'female') {
@@ -1885,19 +1938,16 @@ function getSummaryReport(dateFromStr, dateToStr) {
         summaryMap[dateKey].other += 1;
       }
 
-      // Add amount ONLY once per group, not for each trekker
       if (!processedGroupsForAmount.has(groupKey)) {
         const amount = Number(data[i][amountRemittedIdx]) || 0;
         summaryMap[dateKey].amount += amount;
         processedGroupsForAmount.add(groupKey);
       }
 
-      // Track unique groups
       summaryMap[dateKey].groups.add(groupKey);
     }
   }
 
-  // Convert to array and sort by date
   let summary = Object.values(summaryMap).map(item => ({
     Date: item.date,
     'No. of Trekkers': item.trekkers,
@@ -1908,7 +1958,6 @@ function getSummaryReport(dateFromStr, dateToStr) {
     'No of Groups': item.groups.size
   }));
 
-  // Sort by date
   summary.sort((a, b) => {
     const parseDate = (dateStr) => {
       const parts = dateStr.split('/');
@@ -1917,7 +1966,6 @@ function getSummaryReport(dateFromStr, dateToStr) {
     return parseDate(a.Date) - parseDate(b.Date);
   });
 
-  // Calculate totals
   const totalTrekkers = summary.reduce((sum, item) => sum + item['No. of Trekkers'], 0);
   const totalMale = summary.reduce((sum, item) => sum + item.Male, 0);
   const totalFemale = summary.reduce((sum, item) => sum + item.Female, 0);
@@ -1925,7 +1973,6 @@ function getSummaryReport(dateFromStr, dateToStr) {
   const totalAmount = summary.reduce((sum, item) => sum + item.Amount, 0);
   const totalGroups = summary.reduce((sum, item) => sum + item['No of Groups'], 0);
 
-  // Add totals row
   summary.push({
     Date: 'TOTAL',
     'No. of Trekkers': totalTrekkers,
