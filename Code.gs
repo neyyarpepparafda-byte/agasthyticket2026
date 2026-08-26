@@ -452,14 +452,6 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
     email = (email || '').toString().trim().toLowerCase();
     if (!email) return { success: false, message: 'Invalid email.' };
 
-    // Emergency contact is required (group-level)
-    emergencyContact = (emergencyContact || '').toString().trim();
-    var normalizedEmergency = emergencyContact.replace(/\s+/g, '');
-    var digitsOnly = normalizedEmergency.replace(/[^\d]/g, '');
-    if (!emergencyContact || digitsOnly.length < 7) {
-      return { success: false, message: 'Emergency contact is required and must be a valid phone number.' };
-    }
-
     if (!Array.isArray(trekkers) || trekkers.length < 1 || trekkers.length > 10) {
       return { success: false, message: 'Number of trekkers must be between 1 and 10.' };
     }
@@ -475,30 +467,20 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
     var sheet = ss.getSheetByName('Registrations');
     if (!sheet) {
       sheet = ss.insertSheet('Registrations');
-      sheet.getRange(1,1,1,18).setValues([[
+      sheet.getRange(1,1,1,18).setValues([[ 
         'Email','Trek Date','Amount Remitted','Payment ID','No. of Trekkers','Status','Timestamp',
-        'Trekker Name','Gender','Age','ID Type','ID Number','Mobile Number','Emergency Contact','Is Foreigner','Ticket No','SubmissionId','PaymentReceiptFileId'
+        'Trekker Name','Gender','Age','ID Type','ID Number','Mobile Number','IsForeigner','Ticket No','SubmissionId','PaymentReceiptFileId','Emergency Contact'
       ]]);
     } else {
       var headers = sheet.getRange(1, 1, 1, Math.max(1, sheet.getLastColumn())).getValues()[0];
-      if (headers.indexOf('SubmissionId') === -1) {
-        sheet.insertColumnAfter(headers.length);
-        sheet.getRange(1, headers.length + 1).setValue('SubmissionId');
-        headers = sheet.getRange(1, 1, 1, Math.max(1, sheet.getLastColumn())).getValues()[0];
-      }
-      if (headers.indexOf('PaymentReceiptFileId') === -1) {
-        sheet.insertColumnAfter(sheet.getLastColumn());
-        sheet.getRange(1, sheet.getLastColumn()).setValue('PaymentReceiptFileId');
-      }
-      headers = sheet.getRange(1,1,1,Math.max(1,sheet.getLastColumn())).getValues()[0];
-      if (headers.indexOf('Emergency Contact') === -1) {
-        sheet.insertColumnAfter(headers.length);
-        sheet.getRange(1, headers.length + 1).setValue('Emergency Contact');
-      }
-      headers = sheet.getRange(1,1,1,Math.max(1,sheet.getLastColumn())).getValues()[0];
-      if (headers.indexOf('Is Foreigner') === -1) {
-        sheet.insertColumnAfter(headers.length);
-        sheet.getRange(1, headers.length + 1).setValue('Is Foreigner');
+      // Ensure key columns exist
+      const needed = ['IsForeigner','SubmissionId','PaymentReceiptFileId','Emergency Contact'];
+      for (let h of needed) {
+        if (headers.indexOf(h) === -1) {
+          sheet.insertColumnAfter(sheet.getLastColumn());
+          sheet.getRange(1, sheet.getLastColumn()).setValue(h);
+          headers = sheet.getRange(1, 1, 1, Math.max(1, sheet.getLastColumn())).getValues()[0];
+        }
       }
     }
 
@@ -526,18 +508,21 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
       }
     }
 
-    var localFee = Number(getFeePerPerson()) || 0;
-    // read foreigner fee from Config; fallback to localFee
-    var foreignFee = Number(getConfigValue('FeePerPersonForeigner')) || localFee;
+    // Compute expected amount using configurable ForeignerFee / FeePerPerson
+    var baseFee = Number(getFeePerPerson()) || 0;
+    var foreignFee = Number(getForeignerFee()) || (baseFee * 2);
     var expected = 0;
-    for (var ti = 0; ti < trekkers.length; ti++) {
-      var t = trekkers[ti];
-      var isF = !!t.isForeigner;
-      expected += isF ? foreignFee : localFee;
+    for (var t = 0; t < trekkers.length; t++) {
+      var tf = trekkers[t] || {};
+      var isForeigner = false;
+      if (tf && (tf.isForeigner === true || tf.isForeigner === 'true' || tf.isForeigner === '1' || tf.isForeigner === 1 || (''+tf.isForeigner).toLowerCase() === 'yes')) {
+        isForeigner = true;
+      }
+      expected += isForeigner ? foreignFee : baseFee;
     }
 
     if (Number(amount) !== expected) {
-      return { success: false, message: 'Amount mismatch. Expected ' + expected + ' for provided trekkers and categories.' };
+      return { success: false, message: 'Amount mismatch. Expected ' + expected + ' for ' + trekkers.length + ' trekkers.' };
     }
 
     var receiptFileId = '';
@@ -558,11 +543,11 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
     headerRow = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
     var receiptColIdx = headerRow.indexOf('PaymentReceiptFileId');
     var submissionColIdx = headerRow.indexOf('SubmissionId');
+    var isForeignerColIdx = headerRow.indexOf('IsForeigner');
     var emergencyColIdx = headerRow.indexOf('Emergency Contact');
-    var isForeignerColIdx = headerRow.indexOf('Is Foreigner');
 
     for (var k = 0; k < trekkers.length; k++) {
-      var t = trekkers[k];
+      var tt = trekkers[k] || {};
       var row = [];
       row[headerRow.indexOf('Email')] = email;
       row[headerRow.indexOf('Trek Date')] = trekDateDMY;
@@ -571,16 +556,19 @@ function submitRegistration(email, trekDate, amount, paymentId, trekkers, receip
       row[headerRow.indexOf('No. of Trekkers')] = trekkers.length;
       row[headerRow.indexOf('Status')] = 'Pending';
       row[headerRow.indexOf('Timestamp')] = now;
-      row[headerRow.indexOf('Trekker Name')] = t.name;
-      row[headerRow.indexOf('Gender')] = t.gender;
-      row[headerRow.indexOf('Age')] = t.age;
-      row[headerRow.indexOf('ID Type')] = t.idType;
-      row[headerRow.indexOf('ID Number')] = t.idNumber;
-      row[headerRow.indexOf('Mobile Number')] = t.mobile;
-      if (emergencyColIdx !== -1) row[emergencyColIdx] = emergencyContact;
-      if (isForeignerColIdx !== -1) row[isForeignerColIdx] = t.isForeigner ? 'Yes' : 'No';
+      row[headerRow.indexOf('Trekker Name')] = tt.name || '';
+      row[headerRow.indexOf('Gender')] = tt.gender || '';
+      row[headerRow.indexOf('Age')] = tt.age || '';
+      row[headerRow.indexOf('ID Type')] = tt.idType || '';
+      row[headerRow.indexOf('ID Number')] = tt.idNumber || '';
+      row[headerRow.indexOf('Mobile Number')] = tt.mobile || '';
+
+      var isF = (tt && (tt.isForeigner === true || tt.isForeigner === 'true' || tt.isForeigner === '1' || (''+tt.isForeigner).toLowerCase() === 'yes')) ? 'Yes' : 'No';
+      if (isForeignerColIdx !== -1) row[isForeignerColIdx] = isF;
       if (submissionColIdx !== -1) row[submissionColIdx] = submissionId || '';
       if (receiptColIdx !== -1) row[receiptColIdx] = receiptFileId || '';
+      if (emergencyColIdx !== -1) row[emergencyColIdx] = (emergencyContact || '').toString();
+
       while (row.length < headerRow.length) row.push('');
       sheet.appendRow(row);
     }
@@ -691,7 +679,10 @@ function getGroupDetails(email, date) {
   const headers = data[0].map(h => (h || '').toString());
   const emailIdx = headers.findIndex(h => (h || '').toLowerCase() === 'email');
   const trekDateIdx = headers.findIndex(h => (h || '').toLowerCase() === 'trek date' || (h || '').toLowerCase() === 'trekdate');
-  const receiptIdx = headers.findIndex(h => (h || '').toLowerCase() === 'paymentreceiptfileid' || (h || '').toLowerCase() === 'payment receipt fileid' || (h || '').toLowerCase() === 'payment receip');
+  const receiptIdx = headers.findIndex(h => (h || '').toLowerCase() === 'paymentreceiptfileid' || (h || '').toLowerCase() === 'payment receipt fileid' || (h || '').toLowerCase() === 'payment receipt file id');
+  const isForeignerIdx = headers.findIndex(h => (h || '').toLowerCase() === 'isforeigner' || (h || '').toLowerCase() === 'is foreigner' || (h || '').toLowerCase() === 'is_foreigner');
+  const submissionIdIdx = headers.findIndex(h => (h || '').toLowerCase() === 'submissionid' || (h || '').toLowerCase() === 'submission id');
+  const emergencyIdx = headers.findIndex(h => (h || '').toLowerCase() === 'emergency contact' || (h || '').toLowerCase() === 'emergency_contact');
 
   const trekDateDMY = formatDateDDMMYYYY(date);
 
@@ -706,14 +697,20 @@ function getGroupDetails(email, date) {
   if (rows.length === 0) return null;
 
   const firstRow = rows[0];
+  const headerIndex = (h) => {
+    const idx = headers.findIndex(x => (x || '').toString().toLowerCase() === (h || '').toString().toLowerCase());
+    return idx;
+  };
+
   const groupDetails = {
     Email: firstRow[emailIdx],
     'Trek Date': trekDateDMY,
-    'Amount Remitted': firstRow[headers.findIndex(h => (h || '').toLowerCase() === 'amount remitted' || (h || '').toLowerCase() === 'amount')],
-    'Payment ID': toPlainNumberString(firstRow[headers.findIndex(h => (h || '').toLowerCase() === 'payment id' || (h || '').toLowerCase() === 'paymentid')]) || '',
-    'Ticket No': firstRow[headers.findIndex(h => (h || '').toLowerCase() === 'ticket no' || (h || '').toLowerCase() === 'ticketno')] || '',
-    Status: firstRow[headers.findIndex(h => (h || '').toLowerCase() === 'status')] || '',
-    PaymentReceiptFileId: receiptIdx !== -1 ? (firstRow[receiptIdx] || '') : ''
+    'Amount Remitted': firstRow[headerIndex('Amount Remitted')] || firstRow[headerIndex('Amount')] || '',
+    'Payment ID': firstRow[headerIndex('Payment ID')] || '',
+    'Ticket No': firstRow[headerIndex('Ticket No')] || '',
+    Status: firstRow[headerIndex('Status')] || '',
+    PaymentReceiptFileId: receiptIdx !== -1 ? (firstRow[receiptIdx] || '') : '',
+    EmergencyContact: emergencyIdx !== -1 ? (firstRow[emergencyIdx] || '') : ''
   };
 
   if (groupDetails.PaymentReceiptFileId) {
@@ -725,26 +722,25 @@ function getGroupDetails(email, date) {
     groupDetails.ReceiptViewUrl = '';
   }
 
-  const emergencyIdx = headers.findIndex(h => (h || '').toLowerCase() === 'emergency contact');
-  groupDetails['Emergency Contact'] = emergencyIdx !== -1 ? (firstRow[emergencyIdx] || '') : '';
-
   const nameIdx = headers.findIndex(h => (h || '').toLowerCase() === 'trekker name' || (h || '').toLowerCase() === 'name');
   const genderIdx = headers.findIndex(h => (h || '').toLowerCase() === 'gender');
   const ageIdx = headers.findIndex(h => (h || '').toLowerCase() === 'age');
   const idTypeIdx = headers.findIndex(h => (h || '').toLowerCase() === 'id type' || (h || '').toLowerCase() === 'photo id type');
   const idNumberIdx = headers.findIndex(h => (h || '').toLowerCase() === 'id number' || (h || '').toLowerCase() === 'idnumber');
   const mobileIdx = headers.findIndex(h => (h || '').toLowerCase() === 'mobile number' || (h || '').toLowerCase() === 'mobile');
-  const isForeignerIdx = headers.findIndex(h => (h || '').toLowerCase() === 'is foreigner');
 
-  groupDetails.Trekkers = rows.map(row => ({
-    Name: nameIdx !== -1 ? row[nameIdx] : '',
-    Gender: genderIdx !== -1 ? row[genderIdx] : '',
-    Age: ageIdx !== -1 ? row[ageIdx] : '',
-    'Photo ID Type': idTypeIdx !== -1 ? row[idTypeIdx] : '',
-    'ID Number': idNumberIdx !== -1 ? toPlainNumberString(row[idNumberIdx]) : '',
-    'Mobile Number': mobileIdx !== -1 ? toPlainNumberString(row[mobileIdx]) : '',
-    'Is Foreigner': isForeignerIdx !== -1 ? ( (row[isForeignerIdx] || '').toString().trim() === 'Yes' ) : false
-  }));
+  groupDetails.Trekkers = rows.map(row => {
+    const isF = (isForeignerIdx !== -1) ? ('' + (row[isForeignerIdx] || '')).toLowerCase() : '';
+    return {
+      Name: nameIdx !== -1 ? row[nameIdx] : '',
+      Gender: genderIdx !== -1 ? row[genderIdx] : '',
+      Age: ageIdx !== -1 ? row[ageIdx] : '',
+      'Photo ID Type': idTypeIdx !== -1 ? row[idTypeIdx] : '',
+      'ID Number': idNumberIdx !== -1 ? row[idNumberIdx] : '',
+      'Mobile Number': mobileIdx !== -1 ? row[mobileIdx] : '',
+      isForeigner: (isF === 'yes' || isF === 'true' || isF === '1')
+    };
+  });
 
   return groupDetails;
 }
@@ -962,6 +958,25 @@ function getFeePerPerson() {
     return 0;
   }
 }
+function getForeignerFee() {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const configSheet = ss.getSheetByName('Config');
+    if (!configSheet) return Number(getFeePerPerson()) * 2;
+    const lastRow = configSheet.getLastRow();
+    if (lastRow < 1) return Number(getFeePerPerson()) * 2;
+    const data = configSheet.getRange(1, 1, lastRow, 2).getValues();
+    for (let i = 0; i < data.length; i++) {
+      if ((data[i][0] + '').toString().trim() === 'ForeignerFee') {
+        const val = Number((data[i][1] + '').toString().trim());
+        return (isNaN(val) || val <= 0) ? (Number(getFeePerPerson()) * 2) : val;
+      }
+    }
+    return Number(getFeePerPerson()) * 2;
+  } catch (e) {
+    return Number(getFeePerPerson()) * 2;
+  }
+}
 
 function generateQrDataUrl(text, size) {
   try {
@@ -1033,18 +1048,21 @@ function issueTicketAndEmail(email, date) {
     email: email,
     emergencyContact: emergencyContact
   };
-  const trekkers = groupRows.map(({ row }) => ({
+const isForeignerIdx = headers.findIndex(h => (h || '').toString().toLowerCase() === 'isforeigner' || (h || '').toString().toLowerCase() === 'is foreigner' || (h || '').toString().toLowerCase() === 'is_foreigner');
+
+const trekkers = groupRows.map(({ row }) => {
+  const isFRaw = (isForeignerIdx !== -1 ? (row[isForeignerIdx] || '') : '') + '';
+  const isF = ('' + isFRaw).toLowerCase();
+  return {
     name: row[headers.indexOf('Trekker Name')],
     gender: row[headers.indexOf('Gender')],
     age: row[headers.indexOf('Age')],
     idType: row[headers.indexOf('ID Type')],
-    idNumber: toPlainNumberString(row[headers.indexOf('ID Number')]),
-    mobile: toPlainNumberString(row[headers.indexOf('Mobile Number')]),
-    isForeigner: (function(){
-      var idx = headers.indexOf('Is Foreigner');
-      return idx !== -1 ? ((row[idx]||'').toString().trim() === 'Yes') : false;
-    })()
-  }));
+    idNumber: row[headers.indexOf('ID Number')],
+    mobile: row[headers.indexOf('Mobile Number')],
+    isForeigner: (isF === 'yes' || isF === 'true' || isF === '1')
+  };
+});
 
   try {
     let logoDataUri = getLogoDataUriFromConfig();
@@ -2002,4 +2020,7 @@ function apiGetYetToRegisterEmails() {
 
 function apiDeleteYetToRegisterEmail(email) {
   return deleteYetToRegisterEmail(email);
+}
+function apiGetForeignerFee() {
+  return getForeignerFee();
 }
