@@ -1279,7 +1279,12 @@ body.modal-open {
               </div>
             </div>
           </div>
-
+<!-- Emergency Contact (REQUIRED) -->
+<div class="col-md-6 mb-3">
+  <label class="form-label fw-semibold">Emergency Contact (relative at native place) <span class="text-danger">*</span></label>
+  <input type="text" id="reg-emergency-contact" class="form-control form-control-custom" placeholder="+91-XXXXXXXXXX" required>
+  <small class="text-muted">Phone number of a relative in the trekker's native area (used only for emergencies)</small>
+</div>
           <!-- Trekker Details -->
           <div class="trekker-card">
             <h3 class="h4 fw-bold text-dark mb-3">Trekker Details</h3>
@@ -2570,162 +2575,187 @@ function viewGroupDetails(email, date) {
 
     // ====== Submit Registration ======
     function submitRegistration(){
-      const trekDate = document.getElementById('trek-date').value;
-      const amountRemitted = document.getElementById('amount-remitted').value;
-      const paymentId = document.getElementById('payment-id').value;
-      const receiptInput = document.getElementById('payment-receipt');
-      const trekkers = [];
-      const forms = document.querySelectorAll('#trekkers-container > div');
-      
-      if (!trekDate) {
-        showMessage('user-form-message', 'Please select a trek date.', 'danger');
-        return;
-      }
-      
-      if (!paymentId || paymentId.trim() === '') {
-        showMessage('user-form-message', 'Please enter Payment ID.', 'danger');
-        return;
-      }
-      
-      if (!receiptInput || !receiptInput.files || receiptInput.files.length === 0) {
-        showMessage('user-form-message', 'Please attach the bank transfer receipt before submitting.', 'danger');
-        return;
-      }
+  const trekDate = document.getElementById('trek-date').value;
+  const amountRemitted = document.getElementById('amount-remitted').value;
+  const paymentId = document.getElementById('payment-id').value;
+  const receiptInput = document.getElementById('payment-receipt');
+  const emergencyEl = document.getElementById('reg-emergency-contact');
+  const trekkers = [];
+  const forms = document.querySelectorAll('#trekkers-container > div');
 
-      let allValid = true;
-      for (let i = 0; i < forms.length; i++) {
-        const form = forms[i];
-        const name = form.querySelector('input[name="name"]').value.trim();
-        const gender = form.querySelector('select[name="gender"]').value;
-        const age = form.querySelector('input[name="age"]').value;
-        const idType = form.querySelector('select[name="id-type"]').value;
-        const idNumber = form.querySelector('input[name="id-number"]').value.trim();
-        const mobile = form.querySelector('input[name="mobile"]').value.trim();
-        
-        if (!name || !gender || !age || !idType || !idNumber || !mobile) {
-          showMessage('user-form-message',`Please fill in all details for Trekker ${i+1}`,'danger');
-          allValid = false;
-          break;
-        }
-        if (!/^\d{10}$/.test(mobile)) {
-          showMessage('user-form-message',`Mobile number must be 10 digits for Trekker ${i+1}`,'danger');
-          allValid = false;
-          break;
-        }
-        const ageNum = Number(age);
-        if (isNaN(ageNum) || ageNum < 14 || ageNum > 100) {
-          showMessage('user-form-message',`Age must be between 14 and 100 for Trekker ${i+1}`,'danger');
-          allValid = false;
-          break;
-        }
-        trekkers.push({ name, gender, age: ageNum, idType, idNumber, mobile });
-      }
-      
-      if (!allValid) return;
-      
-      if (!currentUserEmail) {
-        showMessage('user-form-message', 'User email not found. Please log in again.', 'danger');
-        return;
-      }
-      if (allowedMaxForGroup && trekkers.length > allowedMaxForGroup) {
-        showMessage('user-form-message', `This group is authorized for maximum ${allowedMaxForGroup} trekkers.`, 'danger');
-        return;
-      }
+  if (!trekDate) {
+    showMessage('user-form-message', 'Please select a trek date.', 'danger');
+    return;
+  }
 
-      if (allowedDateForUser) {
-        const trekDateDMY = formatDateDDMMYYYY(trekDate);
-        if (trekDateDMY !== allowedDateForUser) {
-          showMessage('user-form-message', `Selected trek date ${trekDateDMY} is not allowed. Assigned date: ${allowedDateForUser}`, 'danger');
-          return;
-        }
-      }
+  if (!paymentId || paymentId.trim() === '') {
+    showMessage('user-form-message', 'Please enter Payment ID.', 'danger');
+    return;
+  }
 
-      showMessage('user-form-message', 'Preparing your receipt and submitting...', 'info');
+  if (!receiptInput || !receiptInput.files || receiptInput.files.length === 0) {
+    showMessage('user-form-message', 'Please attach the bank transfer receipt before submitting.', 'danger');
+    return;
+  }
 
-      const file = receiptInput.files[0];
-      const maxBytes = 4 * 1024 * 1024;
-      if (file.size > maxBytes) {
-        showMessage('user-form-message', 'Receipt file too large. Please use a file less than 4MB.', 'danger');
-        return;
-      }
+  // Emergency contact validation (required)
+  const emergencyContact = emergencyEl ? (emergencyEl.value || '').trim() : '';
+  const emergencyDigits = (emergencyContact || '').replace(/\D/g, '');
+  if (!emergencyContact || emergencyDigits.length < 7) { // accept local and some international numbers; require >=7 digits
+    showMessage('user-form-message', 'Please enter a valid emergency contact number (relative at native place).', 'danger');
+    if (emergencyEl) emergencyEl.focus();
+    return;
+  }
 
-      readFileAsDataUrl(file).then(function(dataUrl) {
-        var parts = dataUrl.split(',');
-        var base64 = parts[1] || '';
-        var mime = (parts[0].split(':')[1] || '').split(';')[0];
+  let allValid = true;
+  for (let i = 0; i < forms.length; i++) {
+    const form = forms[i];
+    const nameEl = form.querySelector('input[name="name"]');
+    const genderEl = form.querySelector('select[name="gender"]');
+    const ageEl = form.querySelector('input[name="age"]');
+    const idTypeEl = form.querySelector('select[name="id-type"]');
+    const idNumEl = form.querySelector('input[name="id-number"]');
+    const mobileEl = form.querySelector('input[name="mobile"]');
 
-        var receiptObj = {
-          name: file.name,
-          mime: mime,
-          base64: base64
-        };
+    const name = nameEl ? nameEl.value.trim() : '';
+    const gender = genderEl ? genderEl.value : '';
+    const age = ageEl ? ageEl.value : '';
+    const idType = idTypeEl ? idTypeEl.value : '';
+    const idNumber = idNumEl ? idNumEl.value.trim() : '';
+    const mobile = mobileEl ? mobileEl.value.trim() : '';
 
-        var submissionId = generateUUID();
+    // Foreigner checkbox — check by name or class (supports either)
+    let isForeigner = false;
+    const chkByName = form.querySelector('input[name="is-foreigner"]');
+    const chkByClass = form.querySelector('.trekker-foreigner');
+    if (chkByName) isForeigner = !!chkByName.checked;
+    else if (chkByClass) isForeigner = !!chkByClass.checked;
 
-        google.script.run
-          .withSuccessHandler(resp=>{
-            if(resp && resp.success){
-              const successText = 'Registration submitted successfully! Please wait for admin verification. The Ticket will be received in your mail within 2 days.';
-
-              if (!document.getElementById('user-form-confirm-overlay')) {
-                const overlay = document.createElement('div');
-                overlay.id = 'user-form-confirm-overlay';
-                overlay.style.position = 'fixed';
-                overlay.style.left = '0';
-                overlay.style.top = '0';
-                overlay.style.width = '100%';
-                overlay.style.height = '100%';
-                overlay.style.backgroundColor = 'rgba(0,0,0,0.45)';
-                overlay.style.display = 'flex';
-                overlay.style.alignItems = 'center';
-                overlay.style.justifyContent = 'center';
-                overlay.style.zIndex = '20000';
-
-                const box = document.createElement('div');
-                box.style.background = '#ffffff';
-                box.style.padding = '20px 22px';
-                box.style.borderRadius = '10px';
-                box.style.maxWidth = '560px';
-                box.style.width = '90%';
-                box.style.boxShadow = '0 8px 30px rgba(0,0,0,0.3)';
-                box.style.textAlign = 'center';
-                box.style.lineHeight = '1.4';
-
-                const msg = document.createElement('div');
-                msg.style.color = '#0b60a5';
-                msg.style.fontSize = '15px';
-                msg.style.fontWeight = '600';
-                msg.style.marginBottom = '14px';
-                msg.textContent = successText;
-
-                const okBtn = document.createElement('button');
-                okBtn.className = 'btn btn-primary-custom';
-                okBtn.style.padding = '10px 22px';
-                okBtn.style.fontSize = '15px';
-                okBtn.textContent = 'OK';
-
-                box.appendChild(msg);
-                box.appendChild(okBtn);
-                overlay.appendChild(box);
-                document.body.appendChild(overlay);
-
-                okBtn.addEventListener('click', function() {
-                  try { overlay.remove(); } catch (e) {}
-                  showView('landing-page');
-                });
-              }
-
-            } else {
-              showMessage('user-form-message', resp && resp.message ? resp.message : 'Submission failed','danger');
-            }
-          })
-          .withFailureHandler(()=> showMessage('user-form-message','Connection error. Please try again.','danger'))
-          .submitRegistration(currentUserEmail, trekDate, amountRemitted, paymentId, trekkers, receiptObj, submissionId);
-
-      }).catch(function(err) {
-        showMessage('user-form-message','Could not read receipt file. Try a different file.','danger');
-      });
+    if (!name || !gender || !age || !idType || !idNumber || !mobile) {
+      showMessage('user-form-message',`Please fill in all details for Trekker ${i+1}`,'danger');
+      allValid = false;
+      break;
     }
+    if (!/^\d{10}$/.test(mobile)) {
+      showMessage('user-form-message',`Mobile number must be 10 digits for Trekker ${i+1}`,'danger');
+      allValid = false;
+      break;
+    }
+    const ageNum = Number(age);
+    if (isNaN(ageNum) || ageNum < 14 || ageNum > 100) {
+      showMessage('user-form-message',`Age must be between 14 and 100 for Trekker ${i+1}`,'danger');
+      allValid = false;
+      break;
+    }
+    trekkers.push({ name, gender, age: ageNum, idType, idNumber, mobile, isForeigner });
+  }
+
+  if (!allValid) return;
+
+  if (!currentUserEmail) {
+    showMessage('user-form-message', 'User email not found. Please log in again.', 'danger');
+    return;
+  }
+  if (allowedMaxForGroup && trekkers.length > allowedMaxForGroup) {
+    showMessage('user-form-message', `This group is authorized for maximum ${allowedMaxForGroup} trekkers.`, 'danger');
+    return;
+  }
+
+  if (allowedDateForUser) {
+    const trekDateDMY = formatDateDDMMYYYY(trekDate);
+    if (trekDateDMY !== allowedDateForUser) {
+      showMessage('user-form-message', `Selected trek date ${trekDateDMY} is not allowed. Assigned date: ${allowedDateForUser}`, 'danger');
+      return;
+    }
+  }
+
+  showMessage('user-form-message', 'Preparing your receipt and submitting...', 'info');
+
+  const file = receiptInput.files[0];
+  const maxBytes = 4 * 1024 * 1024;
+  if (file.size > maxBytes) {
+    showMessage('user-form-message', 'Receipt file too large. Please use a file less than 4MB.', 'danger');
+    return;
+  }
+
+  readFileAsDataUrl(file).then(function(dataUrl) {
+    var parts = dataUrl.split(',');
+    var base64 = parts[1] || '';
+    var mime = (parts[0].split(':')[1] || '').split(';')[0];
+
+    var receiptObj = {
+      name: file.name,
+      mime: mime,
+      base64: base64
+    };
+
+    var submissionId = generateUUID();
+
+    google.script.run
+      .withSuccessHandler(resp=>{
+        if(resp && resp.success){
+          const successText = 'Registration submitted successfully! Please wait for admin verification. The Ticket will be received in your mail within 2 days.';
+
+          if (!document.getElementById('user-form-confirm-overlay')) {
+            const overlay = document.createElement('div');
+            overlay.id = 'user-form-confirm-overlay';
+            overlay.style.position = 'fixed';
+            overlay.style.left = '0';
+            overlay.style.top = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(0,0,0,0.45)';
+            overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            overlay.style.zIndex = '20000';
+
+            const box = document.createElement('div');
+            box.style.background = '#ffffff';
+            box.style.padding = '20px 22px';
+            box.style.borderRadius = '10px';
+            box.style.maxWidth = '560px';
+            box.style.width = '90%';
+            box.style.boxShadow = '0 8px 30px rgba(0,0,0,0.3)';
+            box.style.textAlign = 'center';
+            box.style.lineHeight = '1.4';
+
+            const msg = document.createElement('div');
+            msg.style.color = '#0b60a5';
+            msg.style.fontSize = '15px';
+            msg.style.fontWeight = '600';
+            msg.style.marginBottom = '14px';
+            msg.textContent = successText;
+
+            const okBtn = document.createElement('button');
+            okBtn.className = 'btn btn-primary-custom';
+            okBtn.style.padding = '10px 22px';
+            okBtn.style.fontSize = '15px';
+            okBtn.textContent = 'OK';
+
+            box.appendChild(msg);
+            box.appendChild(okBtn);
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+
+            okBtn.addEventListener('click', function() {
+              try { overlay.remove(); } catch (e) {}
+              showView('landing-page');
+            });
+          }
+
+        } else {
+          showMessage('user-form-message', resp && resp.message ? resp.message : 'Submission failed','danger');
+        }
+      })
+      .withFailureHandler(()=> showMessage('user-form-message','Connection error. Please try again.','danger'))
+      // append emergencyContact as last argument
+      .submitRegistration(currentUserEmail, trekDate, amountRemitted, paymentId, trekkers, receiptObj, submissionId, emergencyContact);
+
+  }).catch(function(err) {
+    showMessage('user-form-message','Could not read receipt file. Try a different file.','danger');
+  });
+}
 
     // ====== Format Date DDMMYYYY ======
     function formatDateDDMMYYYY(dateStr) {
@@ -3213,11 +3243,217 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         }
       });
-
       setTimeout(() => {
         showGlobalMessage('Welcome to Agasthyarkoodam Trekking Portal 2026!', 'info', 3000);
       }, 1000);
     });
-  </script>
+
+(function globalForeignerInjector() {
+  const LOG = '[ForeignerInjector]';
+
+  function createCheckbox(idx) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'form-check form-check-inline small mt-1';
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.className = 'form-check-input trekker-foreigner';
+    input.name = 'is-foreigner';
+    input.id = 'trekker-foreigner-' + idx;
+
+    const label = document.createElement('label');
+    label.className = 'form-check-label ms-1';
+    label.htmlFor = input.id;
+    label.textContent = 'Foreigner';
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(label);
+    return wrapper;
+  }
+
+  // Given a candidate node that may represent a trekker block, find the best insertion point and add checkbox
+  function addCheckboxToCandidate(node, idx) {
+    if (!node || node.nodeType !== 1) return;
+    if (node.querySelector && node.querySelector('.trekker-foreigner')) return; // already added
+
+    // Heuristic: node should contain inputs for name + mobile to be treated as trekker block
+    const hasName = node.querySelector('input[name="name"], input[placeholder*="Name"], .trekker-name, input[name*="name"]');
+    const hasMobile = node.querySelector('input[name="mobile"], input[placeholder*="Mobile"], input[type="tel"], input[name*="phone"]');
+
+    if (!hasName || !hasMobile) return;
+
+    const checkbox = createCheckbox(idx || Date.now());
+
+    // Prefer inserting after the mobile input's wrapper
+    let mobile = node.querySelector('input[name="mobile"], input[placeholder*="Mobile"], input[type="tel"], input[name*="phone"]');
+    if (mobile) {
+      const parent = mobile.parentElement || mobile;
+      try {
+        if (parent && parent.parentNode) {
+          if (parent.nextSibling) parent.parentNode.insertBefore(checkbox, parent.nextSibling);
+          else parent.parentNode.appendChild(checkbox);
+          console.debug(LOG, 'Inserted checkbox after mobile input', node);
+          return;
+        }
+      } catch (e) {
+        console.warn(LOG, 'Insert after mobile failed, appending', e);
+      }
+    }
+
+    // fallback: append to node
+    node.appendChild(checkbox);
+    console.debug(LOG, 'Appended checkbox to node (fallback)', node);
+  }
+
+  // Process existing trekker children under #trekkers-container (if present)
+  function processExisting() {
+    const container = document.getElementById('trekkers-container');
+    if (!container) return;
+    Array.from(container.children).forEach((c, i) => addCheckboxToCandidate(c, i+1));
+    // Also scan deeper to catch nested structures
+    const possible = container.querySelectorAll('div, .trekker-row, .trekker-card, .row');
+    Array.from(possible).forEach((p, i) => addCheckboxToCandidate(p, Date.now() + i));
+  }
+
+  // Observe entire document for added nodes and add checkboxes when trekker-like nodes appear
+  function attachGlobalObserver() {
+    const obs = new MutationObserver(mutations => {
+      mutations.forEach(m => {
+        m.addedNodes.forEach((n, idx) => {
+          if (n.nodeType !== 1) return;
+          if (n.id === 'trekkers-container') {
+            try { processExisting(); } catch(e) { console.warn(LOG, e); }
+            return;
+          }
+          try { addCheckboxToCandidate(n, Date.now() + idx); } catch(e) { console.warn(LOG, e); }
+          try {
+            const descendants = n.querySelectorAll && n.querySelectorAll('div, .trekker-row, .trekker-card, .row');
+            if (descendants && descendants.length) {
+              Array.from(descendants).forEach((d, di) => addCheckboxToCandidate(d, Date.now() + idx + di));
+            }
+          } catch (e) { console.warn(LOG, e); }
+        });
+      });
+    });
+
+    obs.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // Run on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      processExisting();
+      attachGlobalObserver();
+      console.debug(LOG, 'Initialized after DOMContentLoaded');
+    });
+  } else {
+    processExisting();
+    attachGlobalObserver();
+    console.debug(LOG, 'Initialized immediately');
+  }
+})();
+
+(function autoRecalcAmountForForeigners() {
+  const LOCAL_FEE = 5000;
+  const FOREIGN_FEE = 10000;
+  const amountInput = () => document.getElementById('amount-remitted');
+  const containerSelector = '#trekkers-container';
+
+  function computeAndSetAmount() {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+    // Use the same selection as submitRegistration: direct child divs under container
+    const forms = container.querySelectorAll(':scope > div');
+    // Fallback: if no direct children, count any child blocks that contain a name input
+    let trekkerNodes = forms && forms.length ? Array.from(forms) : Array.from(container.querySelectorAll('div'));
+    // Filter nodes to those that look like trekker blocks (contain name or mobile)
+    trekkerNodes = trekkerNodes.filter(n => n.querySelector && (n.querySelector('input[name="name"]') || n.querySelector('input[name="mobile"]')));
+    const total = trekkerNodes.length;
+    let foreigners = 0;
+    trekkerNodes.forEach(node => {
+      const chkByName = node.querySelector('input[name="is-foreigner"]');
+      const chkByClass = node.querySelector('.trekker-foreigner');
+      if ((chkByName && chkByName.checked) || (chkByClass && chkByClass.checked)) foreigners++;
+    });
+    const locals = Math.max(0, total - foreigners);
+    const amount = (locals * LOCAL_FEE) + (foreigners * FOREIGN_FEE);
+    const ai = amountInput();
+    if (!ai) return;
+    ai.value = amount;
+    // Make readonly so user won't override it (if you prefer editable, remove the next line)
+    ai.setAttribute('readonly', 'readonly');
+    // Optionally show a small helper text near the amount input (if element exists)
+    const helperId = 'amount-foreigner-helper';
+    let helper = document.getElementById(helperId);
+    if (!helper) {
+      helper = document.createElement('div');
+      helper.id = helperId;
+      helper.className = 'small-muted mt-1';
+      if (ai.parentNode) ai.parentNode.appendChild(helper);
+    }
+    helper.textContent = `Calculated: ${foreigners} foreigner(s) × ₹${FOREIGN_FEE} + ${locals} local(s) × ₹${LOCAL_FEE} = ₹${amount}`;
+  }
+
+  // Wire change listeners to existing checkboxes
+  function attachCheckboxListeners() {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+    const checkboxes = container.querySelectorAll('.trekker-foreigner, input[name="is-foreigner"]');
+    checkboxes.forEach(chk => {
+      // Avoid double-binding by using a dataset flag
+      if (chk.dataset._foreignListenerAttached) return;
+      chk.addEventListener('change', computeAndSetAmount);
+      chk.dataset._foreignListenerAttached = '1';
+    });
+  }
+
+  // Observe the container for added/removed trekker nodes and reattach listeners
+  function observeContainer() {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+    const mo = new MutationObserver(muts => {
+      let changed = false;
+      muts.forEach(m => {
+        if (m.type === 'childList' && (m.addedNodes.length || m.removedNodes.length)) changed = true;
+        // also if attributes change on checkboxes
+      });
+      if (changed) {
+        // small delay to allow any template rendering to finish
+        setTimeout(() => {
+          attachCheckboxListeners();
+          computeAndSetAmount();
+        }, 50);
+      }
+    });
+    mo.observe(container, { childList: true, subtree: true });
+  }
+
+  // Run on ready
+  function init() {
+    // Make amount input readonly immediately (if present)
+    const ai = amountInput();
+    if (ai) ai.setAttribute('readonly', 'readonly');
+
+    attachCheckboxListeners();
+    computeAndSetAmount();
+    observeContainer();
+
+    // Also recalc on page-level changes that might affect number of trekkers
+    document.addEventListener('click', function () {
+      setTimeout(() => {
+        attachCheckboxListeners();
+        computeAndSetAmount();
+      }, 50);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
 </body>
 </html>
